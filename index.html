@@ -135,6 +135,7 @@ button {
 </select>
 <button onclick="startQuiz()">Commencer le QCM</button>
 </div>
+<div id="question-counter" style="text-align: center; font-size: 20px; color: white; margin-top: 20px;"></div>
 <div id="quiz-container" style="display: none;"></div>
 <button id="submit-btn" style="display: none;">Valider</button>
 <div class="hidden" id="result"></div><button id="restart-btn">Revenir à l'accueil</button>
@@ -1509,7 +1510,7 @@ const questions = [
       answer: 3
     },
     {
-      question: "Se référer à l'annexe COURBE-PUISSANCE-082<br>Quelle est la proposition exacte concernant la courbe de puissance de l’annexe?",
+      question: "Se référer à l'annexe COURBE-PUISSANCE-082<br>Quelle est la proposition exacte concernant la courbe de puissance de l’annexe?<br><img src=\"COURBE-PUISSANCE-082.png\" alt=\"Courbe Puissance\" style=\"max-width: 100%; margin-top: 10px;\">",
       options: [
         "Aucun vol stationnaire, IGE ou OGE n’est possible.",
         "La puissance disponible est suffisante pour un stationnaire IGE et OGE, mais il n’y a pas de marge de puissance pour une montée verticale.",
@@ -1684,6 +1685,7 @@ const questions = [
   showQuestion(currentQuestion);
 
 function startQuiz() {
+  answeredQuestions = 0;
   shuffle(questions);
   const select = document.getElementById("nb-questions");
   let count = select.value;
@@ -1762,13 +1764,14 @@ document.addEventListener("click", function(e) {
 });
 
 </script>
-<footer>DCI GEND 25 - MDC DE JOUVANCOURT DE CHANNES & GND LEMIERE</footer>
+<footer>DCI GEND 25 - MDC DE JOUVANCOURT DE CHANNES &amp; GND LEMIERE</footer>
 <script>
 let currentQuestionIndex = 0;
 let userAnswers = [];
 let quizQuestions = [];
 
 function startQuiz() {
+  answeredQuestions = 0;
   shuffle(questions);
     const selection = document.getElementById("nb-questions").value;
     let count = questions.length;
@@ -1864,6 +1867,5 @@ document.addEventListener("click", function(e) {
 });
 
 </script>
-
 </body>
 </html>
