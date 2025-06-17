@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<title>QCM Mécanique du vol - 082</title>
+<style>
+
+label.selected {
+  border: 3px solid #007BFF;
+  background-color: #dceaff;
+}
+
+    body { font-family: Arial, sans-serif; background: #f7f7f7; padding: 20px; }
+    .question-box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .hidden { display: none; }
+    .correct { background-color: #d4edda; }
+    .incorrect { background-color: #f8d7da; }
+    button { padding: 10px 15px; font-size: 16px; border: none; background: #007BFF; color: white; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    label { display: block; margin-bottom: 10px; padding: 5px; border-radius: 5px; }
+  
+#setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+  padding: 40px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#setup label, #setup select, #setup button {
+  font-size: 20px;
+  margin: 10px;
+}
+
+#result {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 30px;
+}
+#restart-btn {
+  display: block;
+  margin: 20px auto;
+  font-size: 18px;
+  padding: 10px 20px;
+  background: #28a745;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+#restart-btn:hover {
+  background: #218838;
+}
+footer {
+  text-align: center;
+  margin-top: 100px;
+  font-style: italic;
+  color: #555;
+}
+
+#submit-btn {
+  display: block;
+  margin: 20px auto;
+  font-size: 20px;
+  padding: 12px 25px;
+  background: #007BFF;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+#submit-btn:hover {
+  background: #0056b3;
+}
+
+body {
+    background-color: #2c2e83;
+}
+h1 {
+    color: white;
+}
+.question-box {
+    background: #ffffff;
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 20px;
+    width: 80%;
+}
+label {
+    border: 3px solid transparent;
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #000000;
+    background-color: #e4e8ff;
+    padding: 15px;
+}
+label.correct {
+    background-color: #e8fff0;
+    border-color: #00ff00;
+    font-weight: bold;
+}
+#quiz-container {
+    margin-top: 40px;
+}
+button {
+    font-size: 18px;
+    border-radius: 50px;
+}
+
+#submit-btn {
+    display: block;
+    margin: 30px auto;
+    text-align: center;
+}
+</style>
+</head>
+<body>
+<h1 style="text-align: center;">Mécanique du vol (H)</h1>
+<div id="setup">
+<label for="nb-questions">Nombre de questions :</label>
+<select id="nb-questions">
+<option value="5">5</option>
+<option selected="" value="10">10</option>
+<option value="20">20</option>
+<option value="45">Examen blanc</option>
+<option value="all">Tout</option>
+</select>
+<button onclick="startQuiz()">Commencer le QCM</button>
+</div>
+<div id="quiz-container" style="display: none;"></div>
+<button id="submit-btn" style="display: none;">Valider</button>
+<div class="hidden" id="result"></div><button id="restart-btn">Revenir à l'accueil</button>
+<script>
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+const questions = [
+    {
+      question: "Quelles combinaisons de caractéristiques d’un hélicoptère est la plus susceptible d’engendrer une résonance sol ?",
+      options: [
+        "Un train d’atterrissage à patins et un rotor articulé.",
+        "Un train d’atterrissage à roues et un rotor rigide.",
+        "Un train d’atterrissage à patins et un rotor rigide.",
+        "Un train d’atterrissage à roues et un rotor articulé."
+      ],
+      answer: 3
+    },
+    {
+      question: "La puissance de profil peut être définie comme la puissance requise pour maintenir la vitesse de rotation du rotor en opposition…",
+      options: [
+        "à la trainée de forme et à la friction de revêtement, la puissance de profil demeure constante à faible vitesse et augmente aux grandes vitesses.",
+        "à la trainée de profil, la puissance de profil diminue quand la vitesse augmente, variant avec le carré de la vitesse.",
+        "au poids, la puissance de profil augmente notablement à faible vitesse et demeure ensuite quasi constante à grande vitesse.",
+        "à la traînée de forme  et à la friction de revêtement, la puissance de profil augmente proportionnellement avec la vitesse comme une fonction linéaire de la vitesse."
+      ],
+      answer: 0
+    },
+    {
+      question: "Un exploitant est contacté pour des prises de vue sur une célèbre course cycliste. En suivant la course, l’hélicoptère est stationné à divers endroits: <br> -Le jour 1 sur un terrain d’altitude 1000 ft avec une OAT de 10°c, le pilote constate une puissance nécessaire en stationnaire dans l’effet de sol de 90% (100 % étant le maximum absolu).<br> -Le jour 2 sur un terrain d’altitude 1000 ft, avec une OAT de 20°c.<br>-Le jour 3 sur un terrain d’altitude 5000 ft, avec une OAT de 20°c.<br>Quelle est la proposition exacte ?  ",
+      options: [
+        "Cette puissance disponible pourrait être insuffisante pour le stationnaire le jour 3.",
+        "Cette puissance nécessaire au stationnaire est moindre le jour 2.",
+        "Cette puissance nécessaire au stationnaire est la plus forte le jour 1.",
+        "Si cette puissance nécessaire au stationnaire est disponible le jour 2, elle le sera certainement le jour 3 également."
+      ],
+      answer: 0
+    },
+    {
+      question: "Pour maintenir un vol d’avancement, le pilote incline vers l’avant le disque rotor principal à l’aide du cyclique<br>La composante horizontale de la force de portance: <br> Une composante horizontale de la force de portance est créée pour ……",
+      options: [
+        "Le maintient de l’hélicoptère dans une attitude d’accélération.",
+        "Eviter une décélération causée par la réaction de battement vers l’avant du rotor principal.",
+        "Contrer la traînée de profil du rotor.",
+        "Contrer la traînée parasite de l’hélicoptère."
+      ],
+      answer: 3
+    },
+    {
+      question: "La vitesse conventionnelle (CAS) est la vitesse indiquée de l’aéronef corrigée des erreurs...",
+      options: [
+        "de masse volumique et d’étalonnage.",
+        "d’installation et d’oscillations.",
+        "de position et d’instrument.",
+        "de température et d’instrument."
+      ],
+      answer: 2
+    },
+    {
+      question: "Un profil asymétrique est considéré comme instable parce que ...",
+      options: [
+        "la traînée induite change avec l’incidence. ",
+        "le vecteur portance change avec l’incidence.",
+        "le centre de poussée change avec l’incidence.",
+        "le mouvement de battement du profil change avec l’incidence.    "
+      ],
+      answer: 2
+    },
+    {
+      question: "La puissance de profil rotor est minimum lorsque l’hélicoptère est en (1) ... et (2) ...",
+      options: [
+        "(1) Stationnaire.<br>(2) Varie proportionnellement a l’inverse de la TAS.",
+        "(1) Vol d’avancement.<br>(2) Change en proportion inverse de la TAS.",
+        "(1) Vol d’avancement.<br>(2) Est en proportion directe à la TAS.",
+        "(1) Stationnaire.<br>(2) Augmente progressivement avec la TAS."
+      ],
+      answer: 3
+    },
+    {
+      question: "Lorsque l’incidence augmente, les tourbillons d’extrémité de pale...",
+      options: [
+        "augmentent d’intensité à cause de l’accroissement de la pression différentielle.",
+        "augmentent d’intensité à cause de l’accroissement de la vitesse.",
+        "diminuent d’intensité à cause de la diminution de la pression différentielle.",
+        "diminuent d’intensité à cause de la diminution de la vitesse."
+      ],
+      answer: 0
+    },
+    {
+      question: "La nécessite d’un RAC sur un hélicoptère est justifiée par...",
+      options: [
+        "La première loi de newton.",
+        "La loi du carré inverse.",
+        "La seconde loi de newton.",
+        "La troisième loi de newton."
+      ],
+      answer: 3
+    },
+    {
+      question: "En dessous de M 0,3 ou 30 % de la vitesse du son, les effets de compressibilité...",
+      options: [
+        "sont utilises pour améliorer la portance.",
+        "sont ignorés.",
+        "augmentent.",
+        "diminuent à l’extrémité supérieure de la plage de vitesse."
+      ],
+      answer: 1
+    },
+    {
+      question: "Le vent est nul et le centre de gravité est situé à la limite arrière. Pour garder le stationnaire, le pilote doit mettre le cyclique...",
+      options: [
+        "en position à gauche.",
+        "en position à droite.",
+        "en position avant.",
+        "en position arrière."
+      ],
+      answer: 2
+    },
+    {
+      question: "Lorsque le nombre de mach augmente, les effets de compressibilité...",
+      options: [
+        "demeurent constants.",
+        "diminuent.",
+        "augmentent.",
+        "ne sont pas significatifs."
+      ],
+      answer: 2
+    },
+    {
+      question: "Quelle proposition concernant la course de déplacement du cyclique est correcte?",
+      options: [
+        "La même course de déplacement est disponible dans toutes les directions.",
+        "La quantité de collectif utilisée limite la course utilisable des pédales.",
+        "La course de déplacement du cyclique limite la vitesse en arrière d’un hélicoptère.",
+        "La course de déplacement n’est limitée dans aucune direction."
+      ],
+      answer: 2
+    },
+    {
+      question: "Lors d’un flare en vol motorisé, dans quelle direction se trouve orientée la force de poussée totale du rotor principale?",
+      options: [
+        "Verticalement vers le haut.",
+        "Verticalement vers le bas.",
+        "Vers l’arrière.",
+        "Vers l’avant."
+      ],
+      answer: 2
+    },
+    {
+      question: "Les conditions qui favorisent l’impact des pales avec la cellule d’un hélicoptère sont:",
+      options: [
+        "Un faible régime rotor et un fort vent.",
+        "Un fort régime rotor et un fort vent.",
+        "Un fort régime rotor et un vent faible.",
+        "Un faible régime rotor et un vent faible."
+      ],
+      answer: 0
+    },
+    {
+      question: "Lorsque l’angle d’incidence augmente, « le point de décollement » se déplace vers (1)... et la zone de la pale ou se produit la pression différentielle devient plus (2)...",
+      options: [
+        "1)Bord de fuite <br> 2)Petite",
+        "1)Bord d'attaque <br> 2)Grande",
+        "1)Bord de fuite <br> 2)Grande",
+        "1)Bord d'attaque <br> 2)Petite"
+      ],
+      answer: 3
+    },
+    {
+      question: "Vous êtes en vol en hélicoptère monomoteur. Lorsque le moteur tombe en panne, pourquoi est-il nécessaire de reconnaître précocement la situation?",
+      options: [
+        "La traînée induite doit être réduite aussi rapidement que possible.",
+        "Il n’y a pas de nécessité de reconnaissance précoce en croisière, mais elle est importante en montée.",
+        "La traînée du rotor doit être réduite aussi rapidement que possible.",
+        "La traînée induite du rotor doit être augmentée aussi rapidement que possible pour gagner plus de portance."
+      ],
+      answer: 0
+    },
+    {
+      question: "Un hélicoptère avec un rotor à rotation horaire est en vol stationnaire stable avec du vent venant de la droite. Quel est le danger potentiel si le pilote effectue une rotation rapide en lacet vers la gauche?",
+      options: [
+        "Une perte d’efficacité du rotor arrière (LTE).",
+        "Un patin pourrait toucher le sol.",
+        "Un roulis du rotor de queue.",
+        "Une dérive du rotor de queue."
+      ],
+      answer: 0
+    },
+    {
+      question: "La puissance nécessaire pour maintenir un RPM donné avec le pas collectif totalement abaissé, en compensant la traînée créée par les accessoires (transmission par exemple ) est la:",
+      options: [
+        "Puissance induite.",
+        "Somme des puissances, profil rotor, parasite et induite ou puissance totale.",
+        "Puissance parasite.",
+        "Puissance de profil rotor."
+      ],
+      answer: 3
+    },
+    {
+      question: "Le CG de votre hélicoptère est en avant de sa position centrale et vous prévoyez un décollage vent arrière car il n’y a pas d’obstacles dans cette direction.<br>Quelle serait la conséquence la plus significative en cas de décollage interrompu?",
+      options: [
+        "Une distance d’arrêt plus longue serait nécessaire.",
+        "Une distance d’arrêt plus courte serait nécessaire.",
+        "Vous pourriez heurter le sol avec la queue.",
+        "Une consommation de carburant excessive."
+      ],
+      answer: 0
+    },
+    {
+      question: "Pourquoi une articulation de pas est-elle nécessaire sur les pales de rotor arrière?",
+      options: [
+        "Pour contrer le moment de rotation centrifuge.",
+        "Les pales doivent absorber la force centrifuge.",
+        "Pour dévier l’écoulement d’air hors du stabilisateur vertical et du stabilisateur horizontal.",
+        "Le rotor de queue tourne à vitesse quasi constante."
+      ],
+      answer: 3
+    },
+    {
+      question: "Quel type de rotor est propice au talonnage de mat (Mast bumping)?",
+      options: [
+        "Rigide.",
+        "En balancier.",
+        "Totalement articulé.",
+        "Coaxial."
+      ],
+      answer: 1
+    },
+    {
+      question: "Le moment de rappel à plat sur pale de rotor est:",
+      options: [
+        "Le moment sur l’axe de battement dû aux composantes parallèles à la corde de la force centrifuge.",
+        "Le moment sur l’axe de pas dû aux composantes parallèles à la corde de la force centrifuge.",
+        "Le moment sur l’axe de battement dû aux composantes parallèles à l’envergure de la force centrifuge.",
+        "Le moment de roulis dû aux composantes parallèles à l’envergure de la force centrifuge."
+      ],
+      answer: 1
+    },
+    {
+      question: "Un hélicoptère avec son centre de gravité situé en limite arrière...",
+      options: [
+        "Peut avoir des difficultés de décélération pour se mettre en stationnaire en fin d’approche.",
+        "N’a pas de marge de débattement cyclique arrière durant le flare.",
+        "Aura un meilleur contrôle avant/arrière au cyclique que s’il se trouvait avec un centre de gravité situé au milieu de la plage de centrage.",
+        "Peut se retrouver en limite avant du manche cyclique si l’on essaie d’atteindre la VNE."
+      ],
+      answer: 3
+    },
+    {
+      question: "Le principe de fonctionnement des butées basses consiste en...",
+      options: [
+        "Une mise en place sous l’effet de la force centrifuge, ainsi elles sont inactives à faible régime rotor.",
+        "Une mise en place sous l’effet de la force centrifuge, ainsi elles sont inactives en vol.",
+        "Un effacement sous l’action de la force centrifuge, ainsi elles sont inactives à faible régime du rotor.",
+        "Un effacement sous l’action de la force centrifuge, ainsi elles sont inactives en vol."
+      ],
+      answer: 3
+    },
+    {
+      question: "Un hélicoptère NOTAR...",
+      options: [
+        "Nécessite un arbre de transmission plus long que celui d’un hélicoptère à rotor anti couple conventionnel.",
+        "Produit plus de vibrations qu’un hélicoptère à rotor conventionnel.",
+        "N’est pas concerné par le risque de LTE (perte d’efficacité du rotor de queue).",
+        "Une efficacité de contrôle réduite en vent travers, en comparaison à celle d’un hélicoptère à rotor anti couple conventionnel."
+      ],
+      answer: 3
+    },
+    {
+      question: "Pour un type d’opération particulière le pilote ne doit voler qu’à quelques mètres au-dessus du relief à la vitesse de croisière, l’exploitant fournit normalement un hélicoptère X en rotor rigide qui se trouve en maintenance imprévue. <br>L’exploitant fourni aujourd’hui un hélicoptère Y à rotor à balancier. <br>En ce qui concerne les risques associés aux situations à faible G. ",
+      options: [
+        "Le risque d’interférence du mât rotor (MAST BUMPING) est plus grand avec hélicoptère X en raison de son rotor rigide.",
+        "Le pilote doit être prudent avec l’hélicoptère Y pour éviter une situation possible d’interférence mât rotor (MAST BUMPING).",
+        "Ils ne sont présents qu’à de plus grandes hauteurs car une situation de faible G n’est pas ressentie à quelques mètres seulement au-dessus du terrain. ",
+        "Pour que l’interférence mât rotor (MAST BUMPING) se produise, un taux de descente élevé et requis, ce qui ne peut se produire qu’en autorotation. "
+      ],
+      answer: 1
+    },
+    {
+      question: "Pour une température de -3°C, le pilote vient juste de déneiger l’hélicoptère lorsque il reçoit un message d’urgence pour une mission de secours au dessus de l’eau. L’hélicoptère décolle en douceur.<br> Peu après le décollage, l’alarme (régime rotor faible) retentie, le pilote constate une rapide perte d’altitude et effectue immédiatement un atterrissage d’urgence.<br> Les pales de rotor pourraient-elles, à ce stade, être contaminées par du givrage ?",
+      options: [
+        "Oui, la formation de glace, modifie la forme du profil, augmente la traînée et réduit l’angle d’incidence critique, avec pour conséquence d’avancer le point de décollement et donc le décrochage.",
+        "Non, car la glace aurait déjà été dégagée de la totalité de la surface des pales lorsqu’elles ont commencé à tourner à grande vitesse.",
+        "Oui, car le décollage est effectué en douceur sans les fortes vibrations qui se produisent lorsque la glace se forme sur différentes parties des pales et les déséquilibre.",
+        "Oui, mais même avec de la formation de glace, il y aurait suffisamment de portance  en vol avec puissance du fait de la modification permanente des angles d’attaque, le givrage de pales ne provoquerait pas une perte d’altitude."
+      ],
+      answer: 0
+    },
+    {
+      question: "En autorotation, à quelle vitesse sera obtenu le plus fort taux de descente?",
+      options: [
+        "A la vitesse de meilleur angle de montée.",
+        "A la vitesse de meilleur taux de montée.",
+        "A la vitesse air nulle.",
+        "A la vitesse de distance maximale franchissable."
+      ],
+      answer: 2
+    },
+    {
+      question: "Lors d'une autorotation verticale, à quelle zone se rapporte la position interne la plus proche du mat (25%) d’une pale rotor?",
+      options: [
+        "La zone de flux inverse.",
+        "La zone anti-rotative.",
+        "La zone autorotative.",
+        "La zone décrochée."
+      ],
+      answer: 3
+    },
+    {
+      question: "On considère l’effet sur la portance et la traînée de l’accumulation de glace sur les pales d’un rotor.<br>Le coefficient de portance... (1) et le coefficient de traînée ...(2)",
+      options: [
+        "1)Diminue<br>2)Augmente",
+        "1)Diminue<br>2)Diminue",
+        "1)Augmente<br>2)Augmente",
+        "1)Augmente<br>2)Diminue"
+      ],
+      answer: 0
+    },
+    {
+      question: "Laquelle des propositions décrit comment le pilote agit sur le RPM  du rotor en utilisant le collectif en vol en puissance?",
+      options: [
+        "Lorsque le collectif est baissé, l’angle d’attaque est réduit, avec diminution de rapport puissance/trainée, avec d’une tendance de RPM à diminuer.",
+        "Lorsque le collectif est baissé, l’angle d’attaque peut être augmenter, avec une augmentation de rapport puissance/trainée, ce qui réduit le RPM du rotor.",
+        "En augmentant le pas collectif, le pilote augmente l’angle d’attaque, induisant une augmentation rapport portance/trainée et une augmentation du RPM.",
+        "En diminuant le collectif, le pilote réduit la traînée subie par le rotor et le RPM du rotor aura tendance à augmenter."
+      ],
+      answer: 3
+    },
+    {
+      question: "Quels sont les termes qui complètent correctement la proposition relative à l’onde de choc droite sur la surface de la pale?<br>Au travers de cette onde de choc, la décélération vers une vitesse ...(1) est ...(2)<br>La décélération vers une vitesse ...(1) est... (2)dans une onde de choc",
+      options: [
+        "1)Supersonique<br>2)Graduelle",
+        "1)Subsonique<br>2)Brusque",
+        "1)Supersonique<br>2)Brusque",
+        "1)Subsonique<br>2)Graduelle"
+      ],
+      answer: 1
+    },
+    {
+      question: "Vous avez atterri latéralement sur une surface inclinée et de textures rugueuse.<br> Les passagers ont embarqué et vous tentez de décoller mais le patin inférieur semble bloqué et l’hélicoptère commence à se déplacer latéralement.<br>Quelle est la meilleure option à ce moment?",
+      options: [
+        "Déplacer le cyclique dans le sens opposé au roulis.",
+        "Déplacer le cyclique dans le sens du roulis tout en augmentant le pas général.",
+        "Augmenter le pas collectif pour se dégager du sol rapidement.",
+        "Baisser le pas collectif pour éviter d’amplifier le mouvement."
+      ],
+      answer: 3
+    },
+    {
+      question: "Le manche cyclique d’un hélicoptère en vol stationnaire a atteint sa butée avant avec un certain vent de face. Si la vitesse du vent augmente, l’hélicoptère va se mettre à dériver...",
+      options: [
+        "Dans la direction de la dérive due au rotor arrière.",
+        "Dans la direction opposée à la dérive due au rotor arrière.",
+        "Vers l’avant.",
+        "Vers l’arrière."
+      ],
+      answer: 3
+    },
+    {
+      question: "On désigne le mécanisme de rotor de queue qui combine le mouvement de battement et de pas  pour corriger la dissymétrie de portance:",
+      options: [
+        "Liaison K.",
+        "Articulation en balancier.",
+        "Articulation de battement.",
+        "Articulation excentrée."
+      ],
+      answer: 0
+    },
+    {
+      question: "La dissymétrie de portance du rotor de queue est corrigée par la liaison k qui agit sur:",
+      options: [
+        "Le réglage des pales de rotor de queue.",
+        "Le battement de pale de rotor de queue.",
+        "Le longueur des pales de rotor de queue.",
+        "La conicité des pales de rotor de queue."
+      ],
+      answer: 1
+    },
+    {
+      question: "Quel est le but d’une forme en plan avec extrémité de pale en flèche?",
+      options: [
+        "D’égaliser les vibrations dans la plage transsonique.",
+        "D’éviter les vibrations dans la plage transsonique.",
+        "De permettre à la pale d’avancer plus vite, sans devenir supersonique en retardant les effets de compressibilité.",
+        "De permettre à la pale d’avancer à vitesse supersonique en permettent aux effets de compressibilité d’apparaître plus tôt."
+      ],
+      answer: 2
+    },
+    {
+      question: "La puissance nécessaire totale en vol stationnaire hors effet de sol est:",
+      options: [
+        "Egale à la puissance nécessaire totale en vol de montée à Vy.",
+        "Plus grande que la puissance nécessaire totale en vol stationnaire dans l’effet de sol.",
+        "égale à la puissance nécessaire totale en vol stationnaire dans l’effet de sol.",
+        "Plus faible que la puissance nécessaire totale en vol de palier rectiligne à Vy."
+      ],
+      answer: 1
+    },
+    {
+      question: "L’excentrement de l’articulation de battement:",
+      options: [
+        "Permet de réduire la plage de centrage.",
+        "A un effet négatif sur la stabilité dynamique.",
+        "Est sans effet sur la stabilité latérale et longitudinale.",
+        "A un effet positif sur la stabilité statique.  "
+      ],
+      answer: 3
+    },
+    {
+      question: "Quel est l’effet du phénomène appelé « bosse de manche » lors d’un vol d’avancement?",
+      options: [
+        "Un roulis vers le côté de la pale avançante dû à une augmentation de l’angle d’attaque sur l’avant du disque.",
+        "Un roulis vers le côté de la pale reculante dû à une augmentation de l’angle d’attaque sur l’arrière du disque.",
+        "Un cabré de l’hélicoptère dû a une augmentation de l’angle d’attaque du côté avançant du disque.",
+        "Un piqué de l’hélicoptère dû a une augmentation de l’angle d’attaque du côté reculant du disque."
+      ],
+      answer: 0
+    },
+    {
+      question: "Quelques hélicoptères ont dans leur graphique « hauteur/ vitesse » une zone (basse hauteur / vitesse élevée) à éviter.<br> Quelle en est la raison?",
+      options: [
+        "Comme la VNE et bien plus faible à proximité du sol, le vol dans cette partie du graphique pourrait entraîner un décrochage de la pale reculante.",
+        "Si une panne moteur intervient dans cette zone du graphique, le temps pourrait ne pas être suffisant pour assurer à l’hélicoptère d’atterrir en toute sécurité.",
+        "L’aérodynamique du vol à grande vitesse à faible hauteur causerait un décrochage du rotor en cas de défaillance moteur, rendant la récupération impossible.",
+        "Dans le cas d’anciens hélicoptères avec des rotor «semi-rigide », cette partie du graphique montre que le système rotor n’a pas suffisamment d’inertie pour maintenir le régime de rotation (RPM) en cas de défaillance moteur."
+      ],
+      answer: 1
+    },
+    {
+      question: "A quelle vitesse un hélicoptère obtient-il son facteur de charge maximum?",
+      options: [
+        "Vitesse zéro.",
+        "Vitesse de meilleure endurance.",
+        "Vitesse de meilleur rayon d’action.",
+        "Vitesse à ne jamais dépasser."
+      ],
+      answer: 3
+    },
+    {
+      question: "Sur un hélicoptère en stationnaire stabilisé, si la poussée totale du rotor s’exerce en avant du centre de gravité, le moment résultant autour de l’axe latéral est...",
+      options: [
+        "À piquer.",
+        "En roulis à gauche.",
+        "À cabrer.",
+        "En roulis à droite."
+      ],
+      answer: 2
+    },
+    {
+      question: "La diminution de la corde le long d’une pale de rotor s’appelle:",
+      options: [
+        "L’effilement.",
+        "La courbure.",
+        "La flèche.",
+        "Le vrillage."
+      ],
+      answer: 0
+    },
+    {
+      question: "Lorsque le pilote d’un hélicoptère déplace le manche collectif...",
+      options: [
+        "Les commandes font déplacer le plateau cyclique fixe vers le haut ou le bas.",
+        "Les commandes font incliner le plateau cyclique tournant d’une valeur minimale dans la direction souhaiter et d’une valeur maximale avec retard de 90°.",
+        "Le plateau cyclique fixe s’oriente dans la position souhaitée.",
+        "Le plateau cyclique tournant suit l’inclinaison du plateau fixe, mais avec un décalage de 90°."
+      ],
+      answer: 0
+    },
+    {
+      question: "Quel dispositif assure que le plateau tournant reste dans la même position angulaire par rapport au mât et au moyeu du rotor principal?",
+      options: [
+        "Le compas.",
+        "La corne de pas.",
+        "Les biellettes de pas.",
+        "Les ciseaux fixes."
+      ],
+      answer: 0
+    },
+    {
+      question: "Un exploitant de travaux aériens, utilise deux hélicoptères identiques pour effectuer des vols d’inspection de ligne électriques dans deux régions différentes pendant l’été.<br>L’un des hélicoptères effectue un vol continu dans de fortes pluies pendant plusieurs jours, tandis que l’autre hélicoptère effectue principalement des vols par temps sec.<br>Parmi les conditions suivantes, laquelle est susceptible d’être observée à la fin de l’été?",
+      options: [
+        "La pluie aide à garder les pales propres, de sorte que l’hélicoptère utilisé dans la région pluvieuse devrait être plus efficace que l’autre.",
+        "La traînée de profil diminue en raison de l’érosion des pales, de sorte que l’hélicoptère utilisé dans des conditions de fortes pluies devraient avoir besoin de moins de puissance que d’habitude pour maintenir le vol en palier.",
+        "L’hélicoptère qui a été utilisé dans des conditions de fortes pluies demandera probablement plus de puissance que d’habitude pour maintenir le vol en palier.",
+        "Les fortes pluies contribuent à l’érosion des pales, de sorte que l’hélicoptère qui a volé en continu dans des conditions pluvieuses affichera de meilleures performances que l’autre."
+      ],
+      answer: 2
+    },
+    {
+      question: "Pour quelle raison le CG d’un hélicoptère est-il limité vers l’arrière?<br>Une augmentation de la puissance du rotor avec un CG trop en arrière provoquerait...",
+      options: [
+        "Un moment à piquer instable.",
+        "Un moment à piquer stable.",
+        "Un moment à cabrer stable.",
+        "Un moment à cabrer instable."
+      ],
+      answer: 3
+    },
+    {
+      question: "Vous volez à vitesse élevée avec un hélicoptère proche de sa masse maximale, une rafale de vent soulève, le disque rotor à l’avant de l’appareil.<br>Quel est le danger?",
+      options: [
+        "L’utilisation du cyclique en avant fera décrocher les pales avançantes.",
+        "L’utilisation du cyclique en avant fera décrocher les pales reculantes.",
+        "L’utilisation des cycliques latéralement augmentera la vitesse spécifique en extrémité.",
+        "L’utilisation des cycliques en arrière fera décrocher les pales reculantes."
+      ],
+      answer: 1
+    },
+    {
+      question: "La surface du disque rotor en vol:",
+      options: [
+        "Diminue lorsque la masse de l’hélicoptère augmente.",
+        "Est inversement proportionnelle à la force centrifuge.",
+        "N’a aucune relation avec les performances de l’hélicoptère.",
+        "Demeure constante lors des variations du régime rotor (RPM)."
+      ],
+      answer: 0
+    },
+    {
+      question: "La pale reculante se déplace en battement vers le bas, l’écoulement relatif de la pale:",
+      options: [
+        "A une composante vers le bas et par conséquent l’incidence de la pale diminue.",
+        "A une composante vers le haut et par conséquent l’incidence de la pale diminue.",
+        "A une composante vers le haut et par conséquent l’incidence de la pale augmente.",
+        "A une composante vers le bas et par conséquent l’incidence de la pale augmente."
+      ],
+      answer: 2
+    },
+    {
+      question: "La caractéristique géométrique d’un profil symétrique est:",
+      options: [
+        "La distance entre l’intrados et l’extrados est constante.",
+        "A la même  épaisseur sur toute la section du profil.",
+        "A la même cambrure sur l’extrados et l’intrados.",
+        "Les surfaces de  l’intrados et de l’extrados sont différents."
+      ],
+      answer: 2
+    },
+    {
+      question: "En vol d’avancement, le disque rotor est incliné vers l’avant<br>L’effet du cyclique contrôlé par le pilote crée un angle de pas minimal...",
+      options: [
+        "Au dessus du nez de l’hélicoptère.",
+        "Du côté pale reculante.",
+        "Au-dessus de la queue de l’hélicoptère.",
+        "Du côté pale avançante."
+      ],
+      answer: 3
+    },
+    {
+      question: "La bosse de manche (inflow roll) est due a:",
+      options: [
+        "Un basculement du disque rotor du côté de la pale avançante.",
+        "Une répartition inégale de la portance sur le disque rotor.",
+        "Un basculement du disque rotor du côté de la pale reculante.",
+        "Un basculement vers l’arrière en vol d’avancement."
+      ],
+      answer: 1
+    },
+    {
+      question: "Lequel de ces facteurs provoque une dissymétrie de portance du disque rotor lors d’une autorotation?",
+      options: [
+        "La masse de l’hélicoptère.",
+        "La vitesse d’avancement.",
+        "Le régime rotor (RPM).",
+        "Le taux de descente."
+      ],
+      answer: 1
+    },
+    {
+      question: "La poussée du rotor de queue dépend directement:",
+      options: [
+        "De la conicité des pales.",
+        "De la variation cyclique de pas des pales.",
+        "De l’angle de pas des pales.",
+        "Du battement des pales."
+      ],
+      answer: 2
+    },
+    {
+      question: "Avec une forte puissance appliquée en stationnaire, quelle pourrait-être la conséquence si le RPM rotor tombe en dessous de la limite basse?",
+      options: [
+        "L’articulation de pas peut excéder la limite structurale.",
+        "Le vrillage peut excéder la limite structurale.",
+        "L’angle d’attaque peut excéder la limite structurale.",
+        "La conicité peut excéder la limite structurale."
+      ],
+      answer: 3
+    },
+    {
+      question: "Comment la masse totale (AUM) affecte –t-elle la capacité de manœuvre d’un hélicoptère?",
+      options: [
+        "Un hélicoptère lourdement chargé produit davantage de souffle rotor et donc est plus sensible aux actions sur les commandes.",
+        "La capacité de manœuvre d’un hélicoptère ne dépend pas de sa masse.",
+        "Un hélicoptère en mouvement et lourdement charge nécessite davantage de puissance pour s’arrêter.",
+        "Un hélicoptère en mouvement et peu chargé nécessite d’avantage de puissance pour assurer l’équilibre des forces."
+      ],
+      answer: 2
+    },
+    {
+      question: "Pour quelle raison l’effet de sol est-il moins efficace avec une vitesse d’avancement supérieure à environ 12 kt?",
+      options: [
+        "L’angle d’attaque est moindre que celle en stationnaire.",
+        "La puissance gagnée est moindre que celle en stationnaire.",
+        "La puissance gagnée est plus grande que celle en stationnaire.",
+        "La trainée de profil du rotor est moindre que celle en stationnaire."
+      ],
+      answer: 1
+    },
+    {
+      question: "Quelles peuvent être les conséquences d’augmenter la vitesse d’un hélicoptère en palier et en ligne droite?",
+      options: [
+        "Une diminution de la vitesse en bout de pales et potentiellement une inversion de flux du côté reculant.",
+        "Une augmentation de la vitesse en bout de pales et potentiellement un décrochage de la pale avançante.",
+        "Une augmentation de la vitesse en bout de pales et potentiellement un décrochage de la pale reculante.",
+        "Une diminution de la vitesse en bout de pales et potentiellement un décrochage de la pale avançante."
+      ],
+      answer: 2
+    },
+    {
+      question: "Un hélicoptère est en stationnaire en condition de vent nul.<br>le pilote augmente le pas collectif et cela...",
+      options: [
+        "Augmente le pas des pales sur la moitié du disque rotor et en conséquence la force de poussée totale du rotor est écartée de la verticale.",
+        "Augmente le pas des pales uniformément et en conséquence la force de poussée totale du rotor augmente aussi.",
+        "Diminue l’angle de pas sur la moitié du disque rotor et en conséquence la force de puissance totale du rotor diminue.",
+        "Diminue le pas des pales uniformément et en conséquence les angles d’attaque et la force de puissance totale du rotor augmentent."
+      ],
+      answer: 1
+    },
+    {
+      question: "Lors d’une autorotation, quelle est la relation entre l’angle d’incidence et l’angle de la pale du rotor?",
+      options: [
+        "L’angle de pas est plus grand que l’angle d’incidence.",
+        "L’angle d’incidence peut être plus grand ou plus petit que l’angle de pas, selon le taux de descente.",
+        "L’angle d’incidence et l’angle de pas ont des valeurs identiques.",
+        "L’angle d’incidence est plus grand que l’angle de pas."
+      ],
+      answer: 3
+    },
+    {
+      question: "Concernant la définition de la tête rotor et la stabilité statique, les limites de centrage longitudinal peuvent être étendues en théorie avec...",
+      options: [
+        "Un rotor complètement articulé sans excentricité de battement.",
+        "Un rotor en balancier sans articulation de battement excentrée.",
+        "Un rotor rigide pourvu d’une articulation de battement (virtuelle) très excentrée.",
+        "Un rotor complètement articulé à faible excentricité de battement."
+      ],
+      answer: 2
+    },
+    {
+      question: "Les effets transsoniques commencent à être détectables...",
+      options: [
+        "Au-dessus de MACH 1.0.",
+        "Au-dessous de MACH critique (MCRIT).",
+        "Au-dessus de MACH de divergence de traînée.",
+        "Au-dessus de MACH critique (MCRIT)."
+      ],
+      answer: 3
+    },
+    {
+      question: "Lors de sa toute première inspection prévol, un élève pilote inspecte les liaisons de commande du rotor arrière.<br>En manœuvrant les palonniers, il remarque les changements de pas des pales du rotor arrière. Prenant en compte que l’hélicoptère a un rotor tournant dans le sens horaire, quelle est la proposition exacte?",
+      options: [
+        "En poussant sur le palonnier gauche, l’angle de pas de toutes les pales arrières diminue, ainsi que la force de poussée du rotor arrière.",
+        "Le contrôle cyclique du rotor arrière est transmis par une araignée sur les pales plutôt que par un plateau cyclique.",
+        "En poussant sur le palonnier gauche, l’angle de pas des pales du côté avançant augmente, résultant en une augmentation de la force de poussée latérale arrière.",
+        "Pour augmenter la force de poussée du rotor arrière, la pédale droite doit être poussée pour augmenter le RPM du rotor arrière."
+      ],
+      answer: 0
+    },
+    {
+      question: "Quelle est parmi les situations suivantes, celle qui conduit le plus souvent à un surcouple?",
+      options: [
+        "Une transition vers le stationnaire face au vent avec une application de puissance.",
+        "Un décollage vent arrière avec un hélicoptère chargé.",
+        "Une réduction de vitesse à partir du vol en palier rectiligne.",
+        "Une translation latérale sous le vent."
+      ],
+      answer: 1
+    },
+    {
+      question: "Vous effectuez une inspection de ligne électrique dans un hélicoptère avec un rotor à rotation anti-horaire. En suivant la ligne, vous êtes face au vent lorsque l’observateur vous demande d’effectuer un demi-tour par la droite au-dessus d’un poteau.<br>Quel est le danger potentiel?",
+      options: [
+        "Un roulis du rotor arrière. ",
+        "Des anneaux de Vortex.",
+        "Une perte d’efficacité du retour arrière (LTE).",
+        "Une dissymétrie d’importance excessive."
+      ],
+      answer: 2
+    },
+    {
+      question: "Dans quelles circonstances un renversement dynamique peut-il intervenir?",
+      options: [
+        "Lorsque la puissance est appliquée alors qu’un élément du train d’atterrissage est bloqué au sol.",
+        "Avec mouvement des palonniers sans puissance appliquée.",
+        "Lorsque la puissance est appliquée, avec des mouvements avec le cyclique et les palonniers une fois que le train d’atterrissage est dégagé du sol.",
+        "Avec puissance appliquée et fort vent traversier."
+      ],
+      answer: 0
+    },
+    {
+      question: "En vol horizontal et rectiligne (vers l’avant), où se trouve la zone de flux inversé?",
+      options: [
+        "Tout le long de la pale reculante.",
+        "La portion extrême de la pale reculante.",
+        "La portion interne de la pale avançante.",
+        "La portion interne de la pale reculante."
+      ],
+      answer: 3
+    },
+    {
+      question: "Dans le bilan de puissance nécessaire au vol d’un hélicoptère, que couvre la puissance de servitude?",
+      options: [
+        "La puissance nécessaire pour vaincre les effets de traînée parasite, par exemple du train d’atterrissage ou d’une charge à l’élingue.",
+        "La puissance nécessaire pour vaincre les effets de la traînée de profil considérée comme une partie de la traînée parasite.",
+        "La puissance aérodynamique requise par le retour de queue.",
+        "Les éléments tels que les générateurs, les pompes de lubrification et les pertes mécaniques telles que les frottements des transmissions."
+      ],
+      answer: 3
+    },
+    {
+      question: "Comment l’augmentation de l’altitude densité affecte-t-elle l’efficacité des commandes de vol d’un hélicoptère?",
+      options: [
+        "Des déplacements des commandes de vol de plus faible amplitude sont nécessaires pour une réaction donnée de l’appareil.",
+        "Des déplacements de commandes de vol de plus grande amplitude sont nécessaires pour une réaction donnée de l’appareil.",
+        "Les commandes de vol sont plus faciles à manœuvrer et ont davantage d’efficacité.",
+        "L’efficacité des commandes de vol n’est pas affectée par là variation de l’altitude densité."
+      ],
+      answer: 1
+    },
+    {
+      question: "Le système anticouple sur un autogire",
+      options: [
+        "Est nécessaire pour contrer l’effet de rotation en lacet causé par là poussée du moteur transmise au retour principal.",
+        "Est nécessaire pour compenser les effets du couple moteur qui agit directement sur le fuselage et le fait tourner.",
+        "N’est pas nécessaire car le rotor principal tourne librement et le moteur n’induit aucun couple.",
+        "N’est pas requis car la rotation du fuselage engendrée par le couple d’entraînement du moteur est généralement négligeable."
+      ],
+      answer: 2
+    },
+    {
+      question: "Une technique pour réduire les effets dangereux des battements excessifs des pales de rotor est:",
+      options: [
+        "D’utiliser le frein rotor en accord avec ses limitations spécifiques pendant la coupure de puissance.",
+        "D’utiliser le frein rotor juste après le contact avec le sol.",
+        "De laisser le rotor tourner librement pendant la coupure de puissance sans utiliser le frein rotor.",
+        "De garder le frein rotor serré aussi longtemps que possible pendant le lancement du rotor."
+      ],
+      answer: 0
+    },
+    {
+      question: "Pour empêcher un hélicoptère en stationnaire de tourner autour de son axe vertical, la force de poussée du RAC doit être ______ au couple du rotor principal?",
+      options: [
+        "supérieure",
+        "proportionnelle",
+        "inférieure",
+        "inversement proportionnelle"
+      ],
+      answer: 1
+    },
+    {
+      question: "La puissance absorbée par le rotor de queue",
+      options: [
+        "Varie en fonction de la vitesse des pales du rotor principal.",
+        "Est indépendante  de la demande de puissance.",
+        "Varie en fonctions de l’angle de phase des pales du rotor principal.",
+        "Est proportionnelle à la demande de puissance."
+      ],
+      answer: 3
+    },
+    {
+      question: "Comment les forces et moments agissent autour de l’axe longitudinal d’un hélicoptère en stationnaire (par vent nul)? La ... ",
+      options: [
+        "composante horizontale de la poussée totale du rotor agit sous le centre de gravité.",
+        "composante horizontale de la poussée totale du rotor et opposée aux vecteur de poussée de rotor de queue.",
+        "composante verticale de la poussée totale du rotor et opposée aux vecteur poussée du rotor de queue.",
+        "composante verticale de la poussée totale du rotor agit sous le centre de gravité."
+      ],
+      answer: 1
+    },
+    {
+      question: "Au cours d’une approche verticale avec la puissance correspondant au vol stationnaire à 100 ft au-dessus du sol. Brutalement, le taux de descente commence à augmenter lentement. Un régime tourbillonnaire s’est installé. Pour récupérer la situation, le pilote de l’hélicoptère doit...",
+      options: [
+        "se mettre en translation vers l’avant et si possible réduire le pas collectif.",
+        "mettre de la puissance en augmentant. Le régime du rotor. ",
+        "laisser descendre l’hélicoptère et le stabiliser dans l’effet de sol. ",
+        "mettre de la puissance en augmentant le pas collectif."
+      ],
+      answer: 0
+    },
+    {
+      question: "La traînée d’interférence est une composante de...",
+      options: [
+        "la traînée induite.",
+        "la traînée de forme.",
+        "la traînée de friction de surface.",
+        "la traînée parasite."
+      ],
+      answer: 3
+    },
+    {
+      question: "En limite de puissance...",
+      options: [
+        "le régime rotor devrait être maintenu en haut de l’arc vert pour augmenter l’angle d’attaque.",
+        "les manœuvres devraient s’effectuer face au vent pour profiter de l’augmentation de portance.",
+        "les avantages des vents traversiers et arrières devraient être utilisés car ils nécessitent moins de puissance.",
+        "le régime rotor devrait être maintenu aussi élevé que possible pour augmenter la conicité et produire plus de portance."
+      ],
+      answer: 1
+    },
+    {
+      question: "En montée verticale la puissance totale croit lorsque le taux de montée augmente, parce que...",
+      options: [
+        "le pas collectif doit être augmenté pour maintenir le taux de montée lorsque la hauteur s’accroît.",
+        "la puissance de profil du rotor augmente avec l’altitude.",
+        "le flux induit diminuant l’angle d’attaque est supérieur.",
+        "la vitesse du rotor anti-couple doit augmenter en altitude, ce qui accroît sa composante dans la puissance totale demandée."
+      ],
+      answer: 0
+    },
+    {
+      question: "Pour vaincre la traînée parasite de l’hélicoptère pendant le vol d’avancement:",
+      options: [
+        "Le plan définit par l’extrémité des pales doit être basculée vers l’avant.",
+        "Le régime du rotor principal doit être augmenté à l’aide de la manette des gaz.",
+        "Le régime du rotor principal doit être maintenu constant en réduisant légèrement le collectif.",
+        "Le plan définit par l’extrémité des pales doit être basculée du côté de la pale reculante."
+      ],
+      answer: 0
+    },
+    {
+      question: "Pendant un atterrissage sur un sol en pente, comment peut-on contrôler le moment de roulis?",
+      options: [
+        "Par une action au palonnier.",
+        "Par une action au cyclique.",
+        "Par une action au collectif.",
+        "En pilotant le régime."
+      ],
+      answer: 2
+    },
+    {
+      question: "Pour une augmentation équilibrée de la force de poussée du rotor en vol stationnaire hors effet de sol (OGE), l’angle de pas des pales doit être:",
+      options: [
+        "Diminué collectivement.",
+        "Augmenté du côté avançant.",
+        "Augmenté collectivement.",
+        "Diminué du côté avançant."
+      ],
+      answer: 2
+    },
+    {
+      question: "Lors d’une autorotation stabilisée à une vitesse d’environ 60 kt IAS, de quel ordre sera le taux de descente résultant?",
+      options: [
+        "Un fort taux de descente.",
+        "Un faible taux de descente.",
+        "Un taux de descente nul.",
+        "Un taux de descente moyen."
+      ],
+      answer: 0
+    },
+    {
+      question: "Laquelle des actions suivantes amoindrit le danger lors de la décélération des pales du rotor principal après l’arrêt du moteur?",
+      options: [
+        "Appliquer du pas collectif.",
+        "Utiliser le frein rotor.",
+        "Appliquer le palonnier en anticouple.",
+        "Stationner directement face au vent."
+      ],
+      answer: 1
+    },
+    {
+      question: "En vol d’avancement, le rotor  principal d’un (1)... est incliné (2)... de sorte que la veine d’air (3)...",
+      options: [
+        "1)Autogire<br>2)Vers l'arrière<br>3)Traverse le disque rotor de bas en haut",
+        "1)Hélicoptère<br>2)Vers l'arrière<br>3)Traverse le disque rotor de bas en haut",
+        "1)Autogire<br>2)Vers l'avant<br>3)Traverse le disque rotor haut en bas",
+        "1)Hélicoptère<br>2)Vers l'avant<br>3)Traverse le disque rotor de bas en haut"
+      ],
+      answer: 0
+    },
+    {
+      question: "Un hélicoptère avec un rotor principal à balancier est en croisière. Le pilote rencontre de fortes rafale et de la turbulence modérée. Le manuel de vol de l’hélicoptère recommande les vitesses suivantes:<br>Vitesse de distance maximale franchissable: 100 kt<br>Turbulence importante: 60 kt à 70 kt<br>Autorotation :65 kt<br>La raison de la vitesse la plus basse recommandée dans la turbulence est:",
+      options: [
+        "Le risque plus élevé d’un état de vortex dans des conditions météorologiques instables.",
+        "De voler près de la vitesse d’autorotation, parce que dans des conditions de turbulence, le risque de défaillance du moteur est plus élevé.",
+        "Le risque de faible G est d’interférence mât rotor (mast-bumping).",
+        "Limiter les charges sur la cellule et éviter les situations de niveau de gravité élevé, ce qui pourrait demander davantage de puissance de commande pour le contrôle de l’hélicoptère."
+      ],
+      answer: 2
+    },
+    {
+      question: "La limite inférieure du RPM rotor empêche les dégâts structuraux lorsque le RPM Rotor diminue.<br>Ces dommage peuvent survenir lorsque la conicité rotor...",
+      options: [
+        "Augmente à cause d’une vitesse de rotation plus forte.",
+        "Diminue à cause d’une vitesse de rotation plus faible.",
+        "Augmente à cause d’une force centrifuge plus faible.",
+        "Diminue à cause d’une force centrifuge plus forte."
+      ],
+      answer: 2
+    },
+    {
+      question: "Au cours d’un vol d’initiation l’instructeur démontre des rotations sur place en stationnaire à un futur élève pilote. Le petit hélicoptère à moteur à pistons a un rotor anti-horaire.<br>Quelle est la proposition correcte à propos de la force de poussée du rotor arrière lors de cette démonstration?",
+      options: [
+        "Une pression sur le palonnier droit diminue la force de poussée du rotor arrière.",
+        "Une pression sur le palonnier gauche provoque une diminution du pas des pales du rotor arrière, et ainsi une diminution de la force de poussée du rotor arrière.",
+        "Une pression sur le palonnier gauche augmente le pas des pales du côté avançant du rotor arrière.",
+        "Une pression sur le palonnier droit augmente la force de poussée sur la moitié supérieure du disque rotor arrière."
+      ],
+      answer: 0
+    },
+    {
+      question: "Quelle est la relation entre la masse et l’autonomie?<br>L’autonomie...",
+      options: [
+        "diminue avec l’augmentation de la masse.",
+        "n’est pas affectée par la masse.",
+        "diminue avec la diminution de la masse.",
+        "augmente avec l’augmentation de la masse."
+      ],
+      answer: 0
+    },
+    {
+      question: "L’examen des courbes de puissance nécessaires au vol et de puissance disponible définit la vitesse d’avancement maximale de l’hélicoptère par...",
+      options: [
+        "L’intersection de la tangente issue de l’origine de la courbe de puissance nécessaire avec cette courbe.",
+        "L’écart horizontal maximum entre les courbes.",
+        "L’intersection des courbes.",
+        "L’écart vertical maximum entre les courbes."
+      ],
+      answer: 2
+    },
+    {
+      question: "La puissance induite d’un hélicoptère en stationnaire par vent nul sera la plus faible lorsque...",
+      options: [
+        "La vitesse induite du côté avançant du disque est deux fois plus élevée que celle du côté reculant.",
+        "La vitesse induite est plus grande au pied de pale du rotor.",
+        "Les vitesses induites sont uniformes sur le disque rotor.",
+        "Les pales du rotor sont vrillées du pied de la pale jusqu’au saumon, avec l’angle le plus élevé à l’extrémité."
+      ],
+      answer: 2
+    },
+    {
+      question: "Considérant une autorotation avec un hélicoptère à patins.<br>À quel moment du poser en autorotation le pas collectif peut-il être descendu au plein petit pas?",
+      options: [
+        "À grande vitesse sol.",
+        "Après l’arrêt complet de la glissade.",
+        "Un faible vitesse sol.",
+        "Immédiatement après le toucher du sol."
+      ],
+      answer: 1
+    },
+    {
+      question: "Pour réduire le risque de battement excessif des pales...",
+      options: [
+        "le frein rotor doit rester engagé jusqu’à ce que le régime rotor ait atteint la plage verte.",
+        "l’hélicoptère doit avoir atterri sur une pente telle que les pales du rotor ne puissent pas impacter la poutre de queue pendant l’arrêt du rotor.",
+        "le pilote doit respecter les limitations du vent du constructeur lorsqu’il lance ou arrête le rotor.",
+        "L’hélicoptère doit être garé près d’un hangar, à l’abri du vent."
+      ],
+      answer: 2
+    },
+    {
+      question: "Les raisons pour lesquelles un hélicoptère bascule du côté reculant du disque rotor à grande vitesse d’avancement sont une combinaison de vitesse d’avancement et...",
+      options: [
+        "la rotation de la pale qui réduit le vent relatif et donc la portance du côté reculant en comparaison avec le côté avançant.",
+        "l’effet gyroscopique qui provoque un affaissement du rotor et sa rotation de 90 degrés vers le côté avançant.",
+        "la rotation de la pale qui augmente le vent relatif et donc la portance du côté reculant en comparaison avec le côté avancé.",
+        "l’effet gyroscopique qui provoque un affaissement du rotor et sa rotation de 90° degrés vers le côté reculant."
+      ],
+      answer: 0
+    },
+    {
+      question: "Par conception, le vrillage de la pale assure une répartition plus uniforme de la portance le long de la pale. Ceci est obtenu avec:",
+      options: [
+        "Un plus faible angle de pas à l’emplanture et un plus fort à l’extrémité.",
+        "Une plus faible incidence à l’emplanture et une plus forte à l’extrémité.",
+        "Un plus grand angle de pas à l’emplanture et un plus faible à l’extrémité.",
+        "Une plus grande incidence à l’emplanture et une plus faible à l’extrémité."
+      ],
+      answer: 2
+    },
+    {
+      question: "La traînée d’interférence est...",
+      options: [
+        "créée par le mélange des flux d’air générés par le rotor principal et le rotor de queue, en vol d’avancement ou en conditions de vent. C’est un composant de la traînée induite.",
+        "une des causes de la traînée due aux frottements et à la viscosité du flux dans les limites de la couche turbulente.",
+        "une conséquence du gradient adverse produit par la différence de pression au-dessus et au-dessous d’un profil est fait partie de la traînée induite.",
+        "générée par le mélange des flux d’air autour des composants de l’hélicoptère à différentes vitesses, et contribue à la traînée parasite. "
+      ],
+      answer: 3
+    },
+    {
+      question: "L’effet du moment de rappel à plat centrifuge sur une pale de rotor peut être compensé par...<br>1-Un système hydraulique.<br>2-Des masses battantes.<br>3-Des ressorts de compensation.<br>4-Des masses d’équilibrage.<br>5-Des tabs compensateurs fixes.<br>Parmi les propositions suivantes, la combinaison exacte qui permet de compléter l’affirmation, ci-dessus est:",
+      options: [
+        "1, 2, 3 et 4",
+        "1, 2 et 5",
+        "1, 3 et 4",
+        "2, 3, 4 et 5"
+      ],
+      answer: 2
+    },
+    {
+      question: "Les effets transsoniques commencent à apparaître...",
+      options: [
+        "au-dessus du MACH de divergence de traînée.",
+        "au-dessus du MACH d’augmentation critique de la traînée.",
+        "au-dessus du MACH critique (MCRIT).",
+        "au-dessous du MACH critique (MCRIT)."
+      ],
+      answer: 2
+    },
+    {
+      question: "La traînée d’interférence en tant que traînée parasite est due...",
+      options: [
+        "aux pales du rotor.",
+        "aux instruments du poste de pilotage.",
+        "au fuselage principal.",
+        "au mât et au moyeu rotor."
+      ],
+      answer: 2
+    },
+    {
+      question: "Un hélicoptère trimé en vol stabilisé, est soumis brusquement à une augmentation de vitesse sous l’effet d’une rafale de vent.<br>Si l’hélicoptère réagit par un moment à cabrer, il a...",
+      options: [
+        "Une stabilité statique négative.",
+        "Une stabilité latérale positive.",
+        "Une stabilité en vitesse positive.",
+        "Une stabilité latérale négative."
+      ],
+      answer: 2
+    },
+    {
+      question: "La traînée créée par les éléments non sustentateurs de l’hélicoptère est appelée...",
+      options: [
+        "traînée induite.",
+        "traînée de profil.",
+        "traînée parasite.",
+        "traînée de friction."
+      ],
+      answer: 2
+    },
+    {
+      question: "Parmi les situations suivantes, laquelle présente le plus grand risque de renversement dynamique?",
+      options: [
+        "Un matin hiver, sol glacé, puissance appliquée.",
+        "Un jour d’été, hélipad dégagé, puissance appliquée pour le décollage.",
+        "Toute situation où les pédales sont actionnées lorsque l’hélicoptère quitte le sol.",
+        "Une soirée d’hiver sol humide, puissance appliquée."
+      ],
+      answer: 0
+    },
+    {
+      question: "Lors d’un virage en autorotation, les tours rotor (RPM) doivent être contrôlés en utilisant:",
+      options: [
+        "Les palonniers.",
+        "Le contrôle du régime rotor.",
+        "Le cyclique.",
+        "Le pas collectif. "
+      ],
+      answer: 3
+    },
+    {
+      question: "Vous venez de vous mettre en stationnaire et vous remarquez que le nez de l’hélicoptère est inhabituellement bas.<br>Vous sentez que le cyclique est limité par la butée arrière.<br>Quel pourrait être le problème?",
+      options: [
+        "Le stabilisateur horizontal produit trop de portance.",
+        "Un rouleau de rotor de queue.",
+        "La position du CG limite le mouvement de la commande.",
+        "Une dérive en lacet du rotor de queue."
+      ],
+      answer: 2
+    },
+    {
+      question: "Si l’on ajoute une certaine puissance pour monter verticalement, que se passe-t-il pour le taux de montée...",
+      options: [
+        "L’hélicoptère s’élève tout d’abord puis adopte un taux de montée constant.",
+        "Il augmente à cause de la décroissance de la masse volumique de l’air.",
+        "Il diminue progressivement jusqu’à ce que l’hélicoptère se retrouve en stationnaire hors effet sol.",
+        "Il reste constant jusqu’à ce que le plafond absolu soit atteint."
+      ],
+      answer: 2
+    },
+    {
+      question: "Lors d’un décollage normal en conditions de vent nul, les pilotes d’un autogire et d’un hélicoptère doivent chacun appliquer les corrections de commandes afin de compenser une tendance (1)... dans un hélicoptère, (2)... dans un autogyre.",
+      options: [
+        "1)A dériver<br>2)En lacet",
+        "1)A s'enfoncer<br>2)En lacet",
+        "1)A s'incliner<br>2)A s'enfoncer",
+        "1)A dériver<br>2)En s'incliner"
+      ],
+      answer: 2
+    },
+    {
+      question: "Quelle est la cause des tourbillons produits par une pale de rotor?",
+      options: [
+        "Les vibrations induites de la pale.",
+        "La forme géométrique le long de la pale.",
+        "La différence de pression entre l’intrados et l’extrados de la pale.",
+        "Le mouvement de l’extrémité de pale dans l’air non perturbé."
+      ],
+      answer: 2
+    },
+    {
+      question: "Quel est le nom du phénomène de tendance au roulis causé par la distribution non uniforme de la vitesse induite lors d’un vol d’avancement?",
+      options: [
+        "L’état d’anneaux de Vortex.",
+        "La tendance de translation.",
+        "La portance de translation effective.",
+        "La bosse de manche."
+      ],
+      answer: 3
+    },
+    {
+      question: "Deux pilotes d’hélicoptères souhaitent s’entraîner au vol en formation en utilisant un hélicoptère X et un autre Y. Lors du briefing avant vol, l’un des pilote s’inquiète de la différence des types d’hélicoptères, des masses et du comportement pendant les virages.<br>La masse au décollage de l’hélicoptère Y est supérieure à celle de X.<br>Quelle est la proposition exacte?",
+      options: [
+        "En exécutant un virage au taux 1 à la même vitesse, les deux hélicoptères auront la même inclinaison et le même rayon de virage.",
+        "Pour un virage au taux standard, le rayon de virage de l’hélicoptère Y sera plus grand à cause de la masse supérieur à celle de X.",
+        "Pour un virage au taux standard, le rayon de virage de l’hélicoptère Y sera plus grand à cause de la masse supérieur à celle de X.",
+        "En exécutant un virage au taux 1 un à la même vitesse, la composante horizontale de la force de portance du rotor sera la même pour les hélicoptères X et Y."
+      ],
+      answer: 0
+    },
+    {
+      question: "Après la première onde de choc formée sur une pale d’hélicoptère, la seconde onde apparaît sur la surface (1)... (2)... de la première.",
+      options: [
+        "1)Supérieure<br>2)En avant",
+        "1)Inférieure<br>2)En arrière",
+        "1)Supérieure<br>2)En arrière",
+        "1)Inférieure<br>2)En avant"
+      ],
+      answer: 3
+    },
+    {
+      question: "Quelle est la caractéristique d’une tête rotor en balancier?",
+      options: [
+        "Elle est équipée d’amortisseurs de traînée en élastomère.",
+        "Les pales peuvent se mouvoir indépendamment en battement, en pas et en traînée.",
+        "C’est un rotor semi articulé.",
+        "Elle dispose d’articulations déportées."
+      ],
+      answer: 2
+    },
+    {
+      question: "Quelle réaction devrait avoir un pilote rencontrant une résonance sol?",
+      options: [
+        "Tirer très légèrement le collectif et le maintenir en attendant que cesse la résonance.",
+        "Baisser le collectif tout en bas et attendre que la résonance cesse.",
+        "Quitter le sol immédiatement et reposer doucement l’hélicoptère après un court stationnaire.",
+        "Quitter le sol brièvement et reposer l’hélicoptère immédiatement avec fermeté."
+      ],
+      answer: 2
+    },
+    {
+      question: "Quel est l’inconvénient majeur des tourbillons d’extrémité de pale?<br>Les tourbillons d’extrémités de pale...",
+      options: [
+        "réduisent le rendement du (ou des) moteur(s).",
+        "sont réputés pour produire des vibrations sévères.",
+        "dépensent de la puissance des moteurs sans produire de portance utile.",
+        "réduisent la vitesse maximale de l’hélicoptère. "
+      ],
+      answer: 2
+    },
+    {
+      question: "En stationnaire (dans l’effet de sol et sans vent) lorsqu’un hélicoptère subit une rafale de vent de face, sa réaction initiale est:",
+      options: [
+        "Un moment à piquer.",
+        "Un moment à cabrer.",
+        "Une descente verticale due à l’augmentation de la vitesse de l’écoulement.",
+        "Une montée verticale due à l’augmentation de la vitesse de l’écoulement. "
+      ],
+      answer: 1
+    },
+    {
+      question: "Un hélicoptère monomoteur est contacté pour une opération de transport en montagne.<br>Il a été précédemment chargé à la masse maximale (AUM).<br>Les conditions atmosphériques du jour ne sont pas idéales, mais le client souhaite néanmoins que le vol soit réalisé.<br>Le pilote tente le stationnaire de contrôle, l’hélicoptère ne monte pas mais devient léger sur ses patins.<br>Quelle est la proposition correcte?",
+      options: [
+        "Si un stationnaire dans l’effet de sol (IGE) n’est pas possible, le stationner hors effet de sol (OGE) l’est probablement. Le pilote doit juste tirer un peu plus sur le collectif pour monter.",
+        "Si un stationnaire dans l’effet de sol (IGE) n’est pas possible, le vol dans cette configuration ne doit pas être entrepris.",
+        "Le pilote force manuellement la commande des gaz et augmente le régime rotor de 5 à 10%. En appliquant du collectif en même temps, l’hélicoptère décollera.",
+        "Lors de la certification de type, la transmission d’hélicoptère est testée à des charges supérieures à celle du jour, aussi, depuis la position léger sur les patins, le pilote n’a qu’à tirer un petit peu plus sur le collectif pour décoller."
+      ],
+      answer: 1
+    },
+    {
+      question: "Quel type d’onde se crée au point de vitesse maximale lorsqu’un profil atteint la vitesse du son?",
+      options: [
+        "Une onde de choc oblique.",
+        "Une onde de MACH.",
+        "Une onde de choc droite.",
+        "Une onde de choc conforme."
+      ],
+      answer: 2
+    },
+    {
+      question: "En ce qui concerne le plateau oscillant sur le rotor principal, quelle proposition est correcte?",
+      options: [
+        "Le levier de pas collectif incline le plateau oscillant dans la direction requise.",
+        "Lorsque le levier de pas est actionné, le plateau cyclique est incliné parallèlement au plan de rotation.",
+        "Une action sur le collectif fait monter ou descendre le plateau oscillant dans l’axe du mât.",
+        "Une action sur le collectif est transmise via les ciseaux de l’étoile fixe pour créer une différence angulaire de 90° entre les étoiles fixes et tournantes."
+      ],
+      answer: 2
+    },
+    {
+      question: "Un hélicoptère qui a tendance à revenir à sa position d’équilibre après en avoir été écarté par les forces résultantes de l’action sur les commandes de vol et dont les mouvements autour de la position d’équilibre décroissent avec le temps, est considéré comme présentant...",
+      options: [
+        "une stabilité statique positive et une stabilité dynamique négative.",
+        "une stabilité statique négative et une stabilité dynamique positive.",
+        "une stabilité statique négative et une stabilité dynamique négative.",
+        "une stabilité statique positive et une stabilité dynamique positive. "
+      ],
+      answer: 3
+    },
+    {
+      question: "Quelle devrait être la première réaction d’un pilote se retrouvant dans une situation à faible facteur de charge pour éviter talonnage de mât (mast bumping)?",
+      options: [
+        "Positionner le cyclique à gauche pour sortir du faible facteur de charge par un virage à gauche.",
+        "Positionner le cyclique à droite pour sortir du faible facteur de charge par un virage à droite.",
+        "Positionner le cyclique en arrière pour créer de la portance et retrouver un facteur de charge nominal.",
+        "Positionner de cyclique en avant pour accélérer et sortir du faible facteur de charge."
+      ],
+      answer: 2
+    },
+    {
+      question: "La baisse du régime de rotation du rotor principal (RPM) sous la limite basse est l’une des situations les plus dangereuses pour un pilote d’hélicoptère.<br>Quelle combinaison d’affirmation complète correctement la phrase suivante?<br>Lorsque le régime rotor (RPM) diminue.<br>1-L’efficacité du rotor de queue augmente.<br>2-L’angle d’incidence augmente même sans augmenter le pas collectif.<br>3-L’hélicoptère peut commencer à descendre, diminuant  l’angle d’incidence des pales du rotor principal.<br>4-La totalité du rotor principal peut décrocher.<br>5-Il pourrait ne pas être possible de récupérer le décrochage total du rotor, même en baissant totalement le pas collectif et en mettant plein gaz.",
+      options: [
+        "2, 3, 5",
+        "1, 2, 3",
+        "2, 4, 5",
+        "1, 3, 4"
+      ],
+      answer: 2
+    },
+    {
+      question: "Vous êtes en montée lors d’un décollage normal, l’hélicoptère étant proche de la masse maximale avec donc une forte demande de puissance.<br>Pour cette situation, demande-t-elle une attention particulière à la détection précoce de défaillance moteur?",
+      options: [
+        "Les pales du rotor sont dans une position de faible production de traînée et il y a un danger de survitesse lorsque le couple moteur sera supprimé.",
+        "Les pales du rotor sont dans une position de forte production de traînée et ralentiront plus rapidement.",
+        "L’anémomètre est inexact à moins de 60 nœuds, ce qui réduit le jugement précis de l’arrondi.",
+        "Dans les hélicoptères avec des anémomètres amortis, l’angle d’incidence des pales ne peut pas être jugée correctement."
+      ],
+      answer: 1
+    },
+    {
+      question: "De quelle manière la manœuvrabilité d’un hélicoptère est-elle affectée en limite de puissance?",
+      options: [
+        "L’inclinaison possible en virage est réduite.",
+        "Les opérations en aires confinées sont interdites.",
+        "Pour descendre, le pas cyclique doit être baissé rapidement.",
+        "La rotation en stationnaire ne peut être effectuée qu’en utilisant le palonnier contre-couple."
+      ],
+      answer: 0
+    },
+    {
+      question: "Quelle proposition regroupe les conditions donnant la puissance induite la plus faible lors d’un vol stationnaire vent nul?",
+      options: [
+        "Faible charge du disque rotor, vitesses induites uniformes sur le disque, faible altitude densité.",
+        "Forte charge du disque rotor, plus forte vitesse induite aux saumons, faible altitude densité.",
+        "Forte charge du disque rotor, vitesses induites uniformes sur le disque, faible altitude densité.",
+        "Forte charge du disque rotor, plus forte vitesse induite aux saumons, altitude densité élevée."
+      ],
+      answer: 0
+    },
+    {
+      question: "En stationnaire, un pilote d’hélicoptère constate un centrage arrière important. Cela signifie que...",
+      options: [
+        "le pilotage et la manœuvrabilité seront normaux dès que l’appareil aura atteint la vitesse de croisière.",
+        "le pilotage et la manœuvrabilité seront normaux dès que l’appareil sera parti en vol de translation.",
+        "la marge latérale du cyclique sera davantage dégradée que la marge longitudinale.",
+        "la position longitudinale du cyclique sera très affectée durant toutes les phases de vol."
+      ],
+      answer: 3
+    },
+    {
+      question: "Où se trouve l’onde de choc droite?",
+      options: [
+        "Sonique.",
+        "Supersonique.",
+        "Subsonique.",
+        "Transsonique."
+      ],
+      answer: 3
+    },
+    {
+      question: "En augmentant l’angle d’attaque au-delà de sa valeur critique:<br>1-Le point de séparation recule vers le bord de fuite.<br>2-Un fort gradient de pression contraire réduit considérablement la portance.<br>3-La traînée augmente considérablement et là portance demeure constante.<br>4-Le flux turbulent derrière le point de séparation couvre la majorité du profil.<br>5-Un flux inverse est généré par le gradient de pression contraire.<br>Choisissez la combinaison regroupant l’ensemble des propositions correctes.",
+      options: [
+        "2, 4 et 5",
+        "1, 3 et 5",
+        "1, 2 et 4",
+        "1, 4 et 5"
+      ],
+      answer: 0
+    },
+    {
+      question: "Au cours d’un vol dans la neige faible, avec une température extérieure d’environ 0°C, le pilote remarque que le maintien du vol en palier demande plus de puissance que les valeurs opérationnelles normalisées.<nr>Cela est dû à...",
+      options: [
+        "une accumulation de glace qui modifie la forme du profil de pale et rend la surface rugueuse, provoquant le recul du point de séparation vers le bord de fuite.",
+        "une contamination par de la glace sur les bords d’attaque des pales qui provoque la séparation prématurée du flux avec comme conséquence une augmentation du rapport portance/ trainée.",
+        "une accumulation de glace sur les pales qui cause probablement une réduction du rapport portance/traînée, provoquée par la séparation prématurée du flux.",
+        "une accumulation de glace sur les pales qui provoquent une augmentation de la traînée parasite demandant plus de puissance pour maintenir régime rotor (RPM)."
+      ],
+      answer: 2
+    },
+    {
+      question: "La ‘’ solidité ’’ ou ‘’ plénitude ’’ du disque rotor principal est le rapport entre la surface des pales et la surface du disque.<br>On peut définir la surface des pales comme...",
+      options: [
+        "la surface totale de toutes les pales de l’hélicoptère, qui est une constante pour chaque hélicoptère.",
+        "la surface d’une des pales de l’hélicoptère, qui est une constante pour chaque hélicoptère",
+        "la surface d’une pale, obtenue en multipliant la corde moyenne par la longueur de la pale.",
+        "la surface totale de toutes les pales de l’hélicoptère, qui varie avec l’angle de conicité."
+      ],
+      answer: 0
+    },
+    {
+      question: "Le point d’arrêt sur un profil est le point où...",
+      options: [
+        "l’écoulement se sépare complètement du profil.",
+        "toutes les forces aérodynamiques se concentrent.",
+        "la vitesse de l’écoulement relatif est nulle.",
+        "l’écoulement de l’air passe de laminaire à turbulent."
+      ],
+      answer: 2
+    },
+    {
+      question: "Pour qu’un hélicoptère reste en vol de palier horizontal sans accélération...",
+      options: [
+        "la résultante vectorielle de la poussée du rotor et du poids doit être nulle.",
+        "la somme vectorielle de toutes les forces et de tous les moments agissant sur l’hélicoptère doit être égale à un.",
+        "la résultante vectorielle de la poussée du rotor et du poids doit être égale à un.",
+        "la somme vectorielle de toutes les forces et de tous les moments agissant sur l’hélicoptère doit être nulle. "
+      ],
+      answer: 3
+    },
+    {
+      question: "Le pas collectif agit indirectement sur le régime rotor (RPM).<br>De quelle manière?",
+      options: [
+        "Baisser le collectif réduira la traînée totale du rotor, provoquant une réduction de RPM rotor, à moins que le régulateur ne soit capable d’augmenter la puissance automatiquement pour éviter une situation du RPM faible.",
+        "Toute variation du pas des pales correspond à une variation de l’angle d’attaque et du flux induit. Lorsque la valeur du pas est grande, le rapport portance/traînée augmente, avec une tendance du RPM rotor à augmenter.",
+        "Une augmentation du pas des pales provoque une augmentation du coefficient de traînée et du flux induit, augmentant donc la traînée totale du rotor, avec une baisse du RPM rotor si le régime moteur n’est pas rapidement et correctement ajusté.",
+        "L’effet des variations de collectif est évident en altitude élevée, lorsque le régulateur devient moins performant et que la puissance disponible est limitée. Une diminution du pas des pales réduit alors la traînée totale du rotor et le RPM rotor."
+      ],
+      answer: 2
+    },
+    {
+      question: "La position du CG de votre hélicoptère, bien que restant dans les limites, se trouve en arrière de sa position centrale.<br>Quel serait le problème le plus significatif pour le vol?",
+      options: [
+        "Une traînée de profil rotor excessive.",
+        "Une consommation de carburant excessive.",
+        "Vous auriez besoin d’une plus grande distance pour l’atterrissage.",
+        "Vous pourriez heurter le sol avec la queue."
+      ],
+      answer: 3
+    },
+    {
+      question: "La vitesse de l’écoulement derrière une onde de choc droite est:",
+      options: [
+        "Sonique ",
+        "Supersonique",
+        "Subsonique",
+        "Transsonique"
+      ],
+      answer: 2
+    },
+    {
+      question: "Voler sous forte pluie peut créer de l’érosion sur la surface des pales du rotor. Quelle peut être le résultat aérodynamique de cet effet?",
+      options: [
+        "Augmentation de la traînée de forme causée par l’accumulation d’eau sur la surface de la pale.",
+        "Traînée de profil moins importante grâce au polissage de la surface.",
+        "Diminution de la traînée de forme grâce à la perte de poids sur la surface de la pale.",
+        "Traînée de profil plus importante causée par l’augmentation de la friction de surface."
+      ],
+      answer: 3
+    },
+    {
+      question: "Se référer à l'annexe COURBE-PUISSANCE-082<br>Quelle est la proposition exacte concernant la courbe de puissance de l’annexe?",
+      options: [
+        "Aucun vol stationnaire, IGE ou OGE n’est possible.",
+        "La puissance disponible est suffisante pour un stationnaire IGE et OGE, mais il n’y a pas de marge de puissance pour une montée verticale.",
+        "Un stationnaire OGE n’est pas possible, mais la puissance disponible est suffisante pour un stationnaire IGE.",
+        "La puissance disponible est suffisante pour effectuer un stationnaire IGE ou OGE."
+      ],
+      answer: 0
+    },
+    {
+      question: "Lors d'un flare en vol motorisé, la composante (1)... de la force de portance est de direction opposée à la vitesse (2)...",
+      options: [
+        "1)Verticale<br>2)D'avancement",
+        "1)Horizontale<br>2)D'avancement",
+        "1)Horizontale<br>2)De recul",
+        "1)Verticale<br>2)De recul"
+      ],
+      answer: 0
+    },
+    {
+      question: "Deux hélicoptères en formation effectuent un virage à 180° au taux standar par vent nul.<br>L'hélicoptère A vole à 100 kt<br>L'hélicoptère B vole à 130 kt.<br>Quelle sera la différence entre ces deux hélicoptères?",
+      options: [
+        "L'inclinaison de l'hélicoptère A sera plus grande que celle de B.",
+        "Le rayon de virage de l'hélicoptère B sera plus grande que celui de A.",
+        "Le facteur de charge de l'hélicoptère B sera inférieur à celui de A.",
+        "L'hélicoptère B terminera son 180° plus tôt que A."
+      ],
+      answer: 1
+    },
+    {
+      question: "Quel est l'un des inconvénients d'un rotor de queue de type fenestron?",
+      options: [
+        "Le bruit provoqué par l'espacement inégal des pales, peut créer une perte d'audition.",
+        "La petite dérive associée au fenestron est moins efficace à produire de la stabilité directionnelle.",
+        "Le flux d'air circulant le long de l'axe longitudinal de l'appareil peut en réduire les effets d'au moins 50%.",
+        "Il peut devenir inefficace si le flux d'air passe à côté et non à travers des pales."
+      ],
+      answer: 3
+    },
+    {
+      question: "Un hélicoptère est en approche d'atterrissage.<br>La hauteur à laquelle on peut ressentir l'effet de sol est:",
+      options: [
+        "2 diamètres rotor.",
+        "1 rayon de rotor.",
+        "approximativement un diamètre de rotor.",
+        "exactement 1/2 diamètre de rotor."
+      ],
+      answer: 2
+    },
+    {
+      question: "Le point de transition sépare la partie... (1) et la partie... (2) de l'écoulement autour d'un profil.",
+      options: [
+        "(1)haute pression, (2) basse pression",
+        "(1)dynamique, (2)statique",
+        "(1)rapide, (2)lente",
+        "(1)laminaire, (2)turbulente"
+      ],
+      answer: 3
+    },
+    {
+      question: "Parmi les composants suivants de l'hélicoptère, ceux qui givrent le plus rapidement sont:",
+      options: [
+        "Les pales du rotor principal, à cause de la vitesse à laquelle elles sont soumises et à cause de leur profil.",
+        "Le tube de Pitot et c'est pour cela qu'il doit être réchauffé.",
+        "Le pare-brise, à cause de sa surface exposée à l'écoulement.",
+        "La surface du fuselage, à cause de la vitesse à laquelle elle est soumise et à cause de sa forme."
+      ],
+      answer: 1
+    },
+    {
+      question: "Quelle peut être le conséquence d'un centrage avant, bien qu'il soit toujours dans les limites de centrage prévues?",
+      options: [
+        "La portance de transla2on interviendra plus tardivement.",
+        "Le mouvement des pédales sera limité.",
+        "La capacité de flare sera limitée.",
+        "La capacité de virage de l'hélicoptère sera limitée."
+      ],
+      answer: 2
+    },
+    {
+      question: "Quelle est l'effet d'une altitude densité élevée sur l'autonomie?",
+      options: [
+        "Elle n'est pas affectée.",
+        "Elle augmente.",
+        "Elle diminue.",
+        "Elle est maximale."
+      ],
+      answer: 1
+    },
+    {
+      question: "Un hélicoptère est au décollage avec une masse élevée (mais dans les limites). Lors de le préparation du vol, le pilote a examiné le profil de décollage et décidé d' exécuter un décollage roulé. Conformément aux courbes du manuel de vol, l'hélicoptère devrait décoller à 20 kt. Cependant, lors de l'accélération l'hélico atteint 30 kt et se trouve toujours au sol.",
+      options: [
+        "Grace à l'augmentation du pas collectif, l'hélicoptère quittera le sol sans problème. Il reprendra de la vitesse et commencera à monter.",
+        "Il n'y a pas de marge de puissance pour compenser l'augmentation de pas collectif. Le RPM rotor va décroitre et l' hélico restera au sol.",
+        "La modification brusque de l'assiette provoquera de violentes vibrations causées par la résonance sol. Une fois en l'air les vibrations disparaitront.",
+        "L'hélicoptère va quitter le sol, mais ne pourra maintenir sa hauteur que dans l'effet de sol. Ralentir l' hélicoptère permettra une légère réserve de puissance utilisable pour commencer une montée."
+      ],
+      answer: 1
+    },
+    
+      // Reprendre à la 85 ème question
+
+    
+  ];
+
+  // Tirage aléatoire 100% à chaque lancement
+    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    quizQuestions = shuffled.slice(0, count);
+
+  let currentQuestion = 0;
+  let score = 0;
+
+  const container = document.getElementById('quiz-container');
+  const resultBox = document.getElementById('result');
+  const submitBtn = document.getElementById('submit-btn');
+
+  function showQuestion(index) {
+    const q = questions[index];
+    container.innerHTML = `
+      <div class="question-box">
+        <p><strong>Question ${index + 1} :</strong> ${q.question}</p>
+        <form id="form-q">
+          ${q.options.map((opt, i) => `
+            <label id="label-${i}">
+              <input type="radio" name="q" value="${i}"> ${opt}
+            </label>
+          `).join('')}
+        </form>
+      </div>
+    `;
+  }
+
+  function showResult() {
+    container.innerHTML = '';
+    submitBtn.classList.add('hidden');
+    resultBox.classList.remove('hidden');
+    resultBox.innerHTML = `<h2>Votre score : ${score} / ${questions.length}</h2>`;
+  }
+
+  function validateAnswer() {
+    const form = document.forms['form-q'];
+    const selected = [...form.elements['q']].find(r => r.checked);
+    if (!selected) return alert("Merci de sélectionner une réponse.");
+
+    const selectedIndex = parseInt(selected.value);
+    const correctIndex = questions[currentQuestion].answer;
+
+    document.getElementById("label-" + correctIndex).classList.add("correct");
+    if (selectedIndex !== correctIndex) {
+      document.getElementById("label-" + selectedIndex).classList.add("incorrect");
+    } else {
+      score++;
+    }
+
+    [...form.elements['q']].forEach(el => el.disabled = true);
+
+    submitBtn.textContent = currentQuestion < questions.length - 1 ? "Suivant" : "Voir le score";
+    submitBtn.onclick = nextQuestion;
+  }
+
+  function nextQuestion() {
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+      showQuestion(currentQuestion);
+      submitBtn.textContent = "Valider";
+      submitBtn.onclick = validateAnswer;
+    } else {
+      showResult();
+    }
+  }
+
+  submitBtn.onclick = validateAnswer;
+  showQuestion(currentQuestion);
+
+function startQuiz() {
+  shuffle(questions);
+  const select = document.getElementById("nb-questions");
+  let count = select.value;
+  const allQuestions = [...questions];
+  if (count !== "all") {
+    count = parseInt(count);
+    allQuestions.sort(() => Math.random() - 0.5);
+    quizQuestions = allQuestions.slice(0, count);
+  } else {
+    quizQuestions = allQuestions;
+  }
+  document.getElementById("setup").style.display = "none";
+  document.getElementById("quiz-container").style.display = "block";
+  document.getElementById("quiz-container").innerHTML = "";
+  quizQuestions.forEach((q, idx) => {
+    const div = document.createElement("div");
+    div.className = "question-box";
+    div.innerHTML = `<p><strong>Question ${idx + 1}:</strong> ${q.question}</p>` +
+      q.options.map((opt, i) =>
+        `<label><input type='radio' name='q${idx}' value='${i}'> ${opt}</label>`
+      ).join("");
+    document.getElementById("quiz-container").appendChild(div);
+  });
+  document.getElementById("submit-btn").style.display = "inline-block";
+  document.getElementById("result").classList.add("hidden");
+}
+
+document.getElementById("submit-btn").addEventListener("click", function() {
+  let score = 0;
+  quizQuestions.forEach((q, idx) => {
+    const selected = document.querySelector(`input[name='q${idx}']:checked`);
+    const questionDiv = document.querySelectorAll(".question-box")[idx];
+    const labels = questionDiv.querySelectorAll("label");
+    if (selected) {
+      if (parseInt(selected.value) === q.answer) {
+        score++;
+        labels[selected.value].classList.add("correct");
+      } else {
+        labels[selected.value].classList.add("incorrect");
+        labels[q.answer].classList.add("correct");
+      }
+    } else {
+      labels[q.answer].classList.add("correct");
+    }
+  });
+  const percentage = (score / quizQuestions.length * 100).toFixed(1);
+  document.getElementById("result").innerHTML = `Résultat : ${score} / ${quizQuestions.length} (${percentage}%)`;
+  document.getElementById("result").classList.remove("hidden");
+});
+
+
+document.getElementById("restart-btn").addEventListener("click", function() {
+  document.getElementById("quiz-container").style.display = "none";
+  document.getElementById("submit-btn").style.display = "none";
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("setup").style.display = "flex";
+  window.scrollTo(0, 0);
+});
+
+document.getElementById("restart-btn").addEventListener("click", () => {
+  document.getElementById("quiz-container").style.display = "none";
+  document.getElementById("submit-btn").style.display = "none";
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("setup").style.display = "flex";
+  document.getElementById("quiz-container").innerHTML = "";
+});
+
+
+document.addEventListener("click", function(e) {
+  if (e.target && e.target.name && e.target.name.startsWith("q")) {
+    const name = e.target.name;
+    const labels = document.querySelectorAll(`input[name='${name}']`);
+    labels.forEach(input => input.parentElement.classList.remove("selected"));
+    e.target.parentElement.classList.add("selected");
+  }
+});
+
+</script>
+<footer>DCI GEND 25 - MDC DE JOUVANCOURT DE CHANNES & GND LEMIERE</footer>
+<script>
+let currentQuestionIndex = 0;
+let userAnswers = [];
+let quizQuestions = [];
+
+function startQuiz() {
+  shuffle(questions);
+    const selection = document.getElementById("nb-questions").value;
+    let count = questions.length;
+    if (selection !== "all") {
+        count = selection === "45" ? 45 : parseInt(selection);
+    }
+
+    quizQuestions = questions.slice(0, count);
+    userAnswers = new Array(quizQuestions.length).fill(null);
+    localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+    document.getElementById("setup").style.display = "none";
+    document.getElementById("quiz-container").style.display = "block";
+    document.getElementById("submit-btn").style.display = "block";
+    document.getElementById("restart-btn").style.display = "block";
+    showQuestion(0);
+}
+
+function showQuestion(index) {
+    currentQuestionIndex = index;
+    const container = document.getElementById("quiz-container");
+    container.innerHTML = "";
+    const question = quizQuestions[index];
+    const box = document.createElement("div");
+    box.className = "question-box";
+    const q = document.createElement("div");
+    q.innerHTML = `<strong>Question ${index + 1} :</strong><br>${question.question}`;
+    box.appendChild(q);
+
+    question.options.forEach((option, i) => {
+        const label = document.createElement("label");
+        if (userAnswers[index] !== null) {
+            if (i === question.answer) {
+                label.classList.add("correct");
+            } else if (i === userAnswers[index]) {
+                label.classList.add("incorrect");
+            }
+        }
+        label.innerHTML = `<input type="radio" name="q${index}" value="${i}" ${userAnswers[index] === i ? "checked" : ""} onchange="saveAnswer(${index}, ${i})"/> ${option}`;
+        box.appendChild(label);
+    });
+
+    const nav = document.createElement("div");
+    nav.style.textAlign = "center";
+    if (index > 0) {
+        const prev = document.createElement("button");
+        prev.innerText = "Précédent";
+        prev.onclick = () => showQuestion(index - 1);
+        nav.appendChild(prev);
+    }
+    if (index < quizQuestions.length - 1) {
+        const next = document.createElement("button");
+        next.innerText = "Suivant";
+        next.onclick = () => showQuestion(index + 1);
+        nav.appendChild(next);
+    }
+    box.appendChild(nav);
+    container.appendChild(box);
+}
+
+function saveAnswer(index, value) {
+    userAnswers[index] = value;
+    localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+}
+
+document.getElementById("submit-btn").addEventListener("click", () => {
+     let score = 0;
+    quizQuestions.forEach((q, i) => {
+        if (userAnswers[i] == q.answer) score++;
+    });
+    const percent = ((score / quizQuestions.length) * 100).toFixed(1);
+    const resultBox = document.getElementById("result");
+    resultBox.classList.remove("hidden");
+    resultBox.innerHTML = `✅ Votre score est ${score} / ${quizQuestions.length} (${percent}%)`;
+    showQuestion(currentQuestionIndex);
+});
+
+document.getElementById("restart-btn").addEventListener("click", () => {
+  document.getElementById("quiz-container").style.display = "none";
+  document.getElementById("submit-btn").style.display = "none";
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("setup").style.display = "flex";
+  document.getElementById("quiz-container").innerHTML = "";
+});
+
+
+document.addEventListener("click", function(e) {
+  if (e.target && e.target.name && e.target.name.startsWith("q")) {
+    const name = e.target.name;
+    const labels = document.querySelectorAll(`input[name='${name}']`);
+    labels.forEach(input => input.parentElement.classList.remove("selected"));
+    e.target.parentElement.classList.add("selected");
+  }
+});
+
+</script>
+
+</body>
+</html>
