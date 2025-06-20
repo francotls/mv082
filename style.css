@@ -73,6 +73,10 @@ footer {
   color: #555;
 }
 
+footer div.promotion {
+  margin-bottom: 15px;
+}
+
 .form-btn  {
   display: block;
   margin: 20px auto;
