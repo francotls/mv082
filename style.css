@@ -1,0 +1,153 @@
+label.selected {
+  border: 3px solid #007bff;
+  background-color: #dceaff;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  padding: 20px;
+}
+.question-box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+.hidden {
+  display: none;
+}
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background: #0056b3;
+}
+label {
+  display: block;
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+#setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+  padding: 40px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#setup label,
+#setup select,
+#setup button {
+  font-size: 20px;
+  margin: 10px;
+}
+
+#result {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 30px;
+}
+#restart-btn {
+  display: block;
+  margin: 20px auto;
+  font-size: 18px;
+  padding: 10px 20px;
+  background: #28a745;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+#restart-btn:hover {
+  background: #218838;
+}
+footer {
+  text-align: center;
+  margin-top: 100px;
+  font-style: italic;
+  color: #555;
+}
+
+#submit-btn {
+  display: block;
+  margin: 20px auto;
+  font-size: 20px;
+  padding: 12px 25px;
+  background: #007bff;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+#submit-btn:hover {
+  background: #0056b3;
+}
+
+body {
+  background-color: #2c2e83;
+}
+h1 {
+  color: white;
+}
+.question-box {
+  background: #ffffff;
+  border-radius: 10px;
+  margin: 20px auto;
+  padding: 20px;
+  width: 80%;
+}
+label {
+  border: 3px solid transparent;
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #000000;
+  background-color: #e4e8ff;
+  padding: 15px;
+}
+#quiz-container {
+  margin-top: 40px;
+}
+button {
+  font-size: 18px;
+  border-radius: 50px;
+}
+
+#submit-btn {
+  display: block;
+  margin: 30px auto;
+  text-align: center;
+}
+
+.correct {
+  background-color: #e8fff0 !important;
+  border-color: #00ff00 !important;
+  font-weight: bold !important;
+}
+
+.incorrect {
+  background-color: #fbf1f0 !important;
+  border-color: red !important;
+}
+
+.nb-questions {
+  width: 100px;
+  height: 25px;
+  text-align: center;
+}
