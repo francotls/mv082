@@ -108,8 +108,13 @@ function startQuiz(count, mode) {
   } else {
     document.getElementById("submit-btn").style.display = "block";
     document.getElementById("end-btn").style.display = "none";
+    document.getElementById("pause-resume").style.display = "block";
   }
+
+  // reset the pause and resume status each time
+  isPaused = false;
   startTimer();
+  
   showQuestion(currentQuestionIndex, count);
 }
 
@@ -294,7 +299,7 @@ function stopTimer() {
 function resetTimer() {
   clearInterval(timerInterval);
   secondsElapsed = 0;
-  document.getElementById("timer").textContent = "00:00";
+  document.getElementById("timer").textContent = "Temps passé: 00:00";
 }
 
 function resetQuiz() {
