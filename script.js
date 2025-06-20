@@ -91,7 +91,10 @@ function initializeQuizUI() {
 }
 
 function startQuiz(count, mode) {
+  // shuffle everthing ahaaaa
+  shuffleArray(allQuestions);
   quizQuestions = allQuestions.slice(0, count);
+  shuffleArray(quizQuestions);
   userAnswers = new Array(count).fill(null);
 
   localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
@@ -114,7 +117,7 @@ function startQuiz(count, mode) {
   // reset the pause and resume status each time
   isPaused = false;
   startTimer();
-  
+
   showQuestion(currentQuestionIndex, count);
 }
 
