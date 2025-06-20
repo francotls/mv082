@@ -1,7 +1,11 @@
+// Initial values
 let allQuestions = [];
 let quizQuestions = [];
 let currentQuestionIndex = 0;
 let userAnswers = [];
+let timerInterval;
+let secondsElapsed = 0;
+let isPaused = false;
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadQuestions();
@@ -94,18 +98,30 @@ function startQuiz(count) {
   document.getElementById("quiz-container").style.display = "block";
   document.getElementById("submit-btn").style.display = "block";
   document.getElementById("restart-btn").style.display = "block";
-  showQuestion(currentQuestionIndex);
+  document.getElementById("end-btn").style.display = "block";
+  startTimer();
+  showQuestion(currentQuestionIndex, count);
 }
 
-function showQuestion(index) {
+function showQuestion(index, count) {
   currentQuestionIndex = index;
+
+  const infobar = document.getElementById("info-bar");
+  const questionIndex = infobar.querySelector("#nb");
+  const total = infobar.querySelector("#total");
+
+  questionIndex.innerHTML = index + 1;
+  total.innerHTML = count;
+
+  infobar.style.display = "flex";
+
   const container = document.getElementById("quiz-container");
   container.innerHTML = "";
   const question = quizQuestions[index];
 
   const box = document.createElement("div");
   box.className = "question-box";
-  box.innerHTML = `<strong>Question ${index + 1}:</strong><br>${
+  box.innerHTML = `<strong>Question ${index + 1}:</strong><br><br>${
     question.question
   }`;
 
@@ -134,17 +150,17 @@ function showQuestion(index) {
   });
 
   const nav = document.createElement("div");
-  nav.style.textAlign = "center";
+  nav.setAttribute("class", "nav-btn" )
   if (index > 0) {
     const prev = document.createElement("button");
     prev.innerText = "Précédent";
-    prev.onclick = () => showQuestion(index - 1);
+    prev.onclick = () => showQuestion(index - 1, count);
     nav.appendChild(prev);
   }
   if (index < quizQuestions.length - 1) {
     const next = document.createElement("button");
     next.innerText = "Suivant";
-    next.onclick = () => showQuestion(index + 1);
+    next.onclick = () => showQuestion(index + 1, count);
     nav.appendChild(next);
   }
 
@@ -187,10 +203,45 @@ function submitQuiz() {
   });
 }
 
+function startTimer() {
+  const timerElement = document.getElementById("timer");
+  secondsElapsed = 0;
+
+  if (timerInterval) clearInterval(timerInterval); // Reset if already running
+
+  timerInterval = setInterval(() => {
+    if (!isPaused) {
+        secondsElapsed++;
+        const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+        const secs = String(secondsElapsed % 60).padStart(2, '0');
+        timerElement.textContent = `Temps passé: ${mins}:${secs}`;
+    }
+  }, 1000);
+}
+
+function toggleTimer() {
+  isPaused = !isPaused;
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  secondsElapsed = 0;
+  document.getElementById("timer").textContent = "00:00";
+}
+
+
+
 function resetQuiz() {
   document.getElementById("quiz-container").style.display = "none";
   document.getElementById("submit-btn").style.display = "none";
   document.getElementById("result").classList.add("hidden");
   document.getElementById("setup").style.display = "flex";
   document.getElementById("quiz-container").innerHTML = "";
+  document.getElementById("info-bar").style.display = "none";
+  document.getElementById("end-btn").style.display = "none";
+  resetTimer();
 }
