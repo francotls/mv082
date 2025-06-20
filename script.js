@@ -25,9 +25,11 @@ document.querySelectorAll(".start-btn").forEach((button) => {
         questionCount < 1 ||
         questionCount > allQuestions.length
       ) {
-        alert(
-          `Veuillez entrer un nombre valide de questions (1 à ${allQuestions.length})`
-        );
+        Swal.fire({
+          title: "Mauvaise Configuration",
+          text: `Entrez un nombre valide de questions  (entre 1 à ${allQuestions.length}) `,
+          icon: "warning",
+        });
         return;
       }
     }
@@ -36,7 +38,7 @@ document.querySelectorAll(".start-btn").forEach((button) => {
         ? parseInt(document.getElementById("nb-questions").value)
         : 42;
 
-    startQuiz(questionCount);
+    startQuiz(questionCount, mode);
   });
 });
 
@@ -71,7 +73,8 @@ function shuffleArray(arr) {
 }
 
 function initializeQuizUI() {
-  document.getElementById("submit-btn").addEventListener("click", submitQuiz);
+  document.getElementById("submit-btn").addEventListener("click", correctQuiz);
+  document.getElementById("end-btn").addEventListener("click", submitExam);
   document.getElementById("restart-btn").addEventListener("click", resetQuiz);
 
   document.addEventListener("click", function (e) {
@@ -87,7 +90,7 @@ function initializeQuizUI() {
   });
 }
 
-function startQuiz(count) {
+function startQuiz(count, mode) {
   quizQuestions = allQuestions.slice(0, count);
   userAnswers = new Array(count).fill(null);
 
@@ -96,10 +99,22 @@ function startQuiz(count) {
 
   document.getElementById("setup").style.display = "none";
   document.getElementById("quiz-container").style.display = "block";
-  document.getElementById("submit-btn").style.display = "block";
   document.getElementById("restart-btn").style.display = "block";
-  document.getElementById("end-btn").style.display = "block";
+
+  if (mode == "exam") {
+    document.getElementById("submit-btn").style.display = "none";
+    document.getElementById("end-btn").style.display = "block";
+    document.getElementById("pause-resume").style.display = "none";
+  } else {
+    document.getElementById("submit-btn").style.display = "block";
+    document.getElementById("end-btn").style.display = "none";
+    document.getElementById("pause-resume").style.display = "block";
+  }
+
+  // reset the pause and resume status each time
+  isPaused = false;
   startTimer();
+  
   showQuestion(currentQuestionIndex, count);
 }
 
@@ -150,7 +165,7 @@ function showQuestion(index, count) {
   });
 
   const nav = document.createElement("div");
-  nav.setAttribute("class", "nav-btn" )
+  nav.setAttribute("class", "nav-btn");
   if (index > 0) {
     const prev = document.createElement("button");
     prev.innerText = "Précédent";
@@ -173,7 +188,7 @@ function saveAnswer(index, value) {
   localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
 }
 
-function submitQuiz() {
+function correctQuiz() {
   let score = 0;
   quizQuestions.forEach((q, i) => {
     if (userAnswers[i] === q.answer) score++;
@@ -203,6 +218,60 @@ function submitQuiz() {
   });
 }
 
+function submitExam() {
+  const unansweredCount = userAnswers.filter(
+    (answer) => answer === null || answer === undefined
+  ).length;
+
+  if (unansweredCount > 0) {
+    Swal.fire({
+      title: "Test incomplet",
+      text: `Vous devez répondre à toutes les questions pour terminer le test !
+    Il vous reste ${unansweredCount} questions sans réponse !`,
+      icon: "warning",
+      confirmButtonText: "Continuez l'examen !",
+    });
+
+    return;
+  }
+  // stop timer when the user submit the test
+  stopTimer();
+
+  let score = 0;
+  quizQuestions.forEach((q, i) => {
+    if (userAnswers[i] === q.answer) score++;
+  });
+  const percentage = ((score / quizQuestions.length) * 100).toFixed(1);
+
+  let swalDict = {};
+
+  if (percentage > 75) {
+    swalDict.title = "Examen Reussi !";
+    swalDict.text = `Pourcentage : ${percentage} % questions trouvées: ${score} / ${quizQuestions.length}`;
+    swalDict.icon = "success";
+  } else {
+    swalDict.title = "Examen raté !";
+    swalDict.text = `Pourcentage : ${percentage} questions trouvées: ${score} / ${quizQuestions.length}`;
+    swalDict.icon = "error";
+  }
+
+  Swal.fire({
+    title: swalDict.title,
+    text: swalDict.text,
+    icon: swalDict.icon,
+    confirmButtonText: "Voir les résultats",
+  });
+
+  // display the result
+  correctQuiz();
+  // make the selected answer unupdatable
+  document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+    radio.disabled = true;
+  });
+  // once the test is validated no more validation allow avoiding correction and resubmitting
+  document.getElementById("end-btn").style.display = "none";
+}
+
 function startTimer() {
   const timerElement = document.getElementById("timer");
   secondsElapsed = 0;
@@ -211,10 +280,10 @@ function startTimer() {
 
   timerInterval = setInterval(() => {
     if (!isPaused) {
-        secondsElapsed++;
-        const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
-        const secs = String(secondsElapsed % 60).padStart(2, '0');
-        timerElement.textContent = `Temps passé: ${mins}:${secs}`;
+      secondsElapsed++;
+      const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, "0");
+      const secs = String(secondsElapsed % 60).padStart(2, "0");
+      timerElement.textContent = `Temps passé: ${mins}:${secs}`;
     }
   }, 1000);
 }
@@ -230,10 +299,8 @@ function stopTimer() {
 function resetTimer() {
   clearInterval(timerInterval);
   secondsElapsed = 0;
-  document.getElementById("timer").textContent = "00:00";
+  document.getElementById("timer").textContent = "Temps passé: 00:00";
 }
-
-
 
 function resetQuiz() {
   document.getElementById("quiz-container").style.display = "none";
