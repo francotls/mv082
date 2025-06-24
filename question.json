@@ -704,8 +704,8 @@
     "options":[
       "Réponse A<br>La puissance nécessaire pour vaincre les effets de traînée parasite, par exemple du train d’atterrissage ou d’une charge à l’élingue.",
       "Réponse B<br>La puissance nécessaire pour vaincre les effets de la traînée de profil considérée comme une partie de la traînée parasite.",
-      "Réponse C<br>La puissance aérodynamique requise par le retour de queue.",
-      "Réponse D<br>Les éléments tels que les générateurs, les pompes de lubrification et les pertes mécaniques telles que les frottements des transmissions."
+      "Réponse C<br>La puissance aérodynamique requise par le rotor de queue.",
+      "Réponse D<br>Des éléments tels que les générateurs, les pompes de lubrification et les pertes mécaniques telles que les frottements des transmissions."
     ],
     "answer":3
   },
@@ -760,11 +760,11 @@
     "answer":3
   },
   {
-    "question":"Comment les forces et moments agissent autour de l’axe longitudinal d’un hélicoptère en stationnaire (par vent nul)? La ... ",
+    "question":"Comment les forces et moments agissent autour de l’axe longitudinal d’un hélicoptère en stationnaire (par vent nul)? la ... ",
     "options":[
       "Réponse A<br>composante horizontale de la poussée totale du rotor agit sous le centre de gravité.",
-      "Réponse B<br>composante horizontale de la poussée totale du rotor et opposée aux vecteur de poussée de rotor de queue.",
-      "Réponse C<br>composante verticale de la poussée totale du rotor et opposée aux vecteur poussée du rotor de queue.",
+      "Réponse B<br>composante horizontale de la poussée totale du rotor est opposée au vecteur de poussée de rotor de queue.",
+      "Réponse C<br>composante verticale de la poussée totale du rotor est opposée au vecteur poussée du rotor de queue.",
       "Réponse D<br>composante verticale de la poussée totale du rotor agit sous le centre de gravité."
     ],
     "answer":1
@@ -1377,7 +1377,7 @@
       "Réponse C<br>1)Horizontale<br>2)De recul",
       "Réponse D<br>1)Verticale<br>2)De recul"
     ],
-    "answer":0
+    "answer":1
   },
   {
     "question":"Deux hélicoptères en formation effectuent un virage à 180° au taux standar par vent nul.<br>L'hélicoptère A vole à 100 kt<br>L'hélicoptère B vole à 130 kt.<br>Quelle sera la différence entre ces deux hélicoptères?",
@@ -1460,7 +1460,7 @@
     "answer":1
   },
   {
-    "question":"Parmi les situa2ons suivantes, quelle est celle qui conduit le plus fréquemment à un surcouple sur un appareil équipé d'une turbine:",
+    "question":"Parmi les situations suivantes, quelle est celle qui conduit le plus fréquemment à un surcouple sur un appareil équipé d'une turbine:",
     "options":[
       "Réponse A<br>Un fort vent de face qui chute brutalement alors que vous élinguez une charge lourde.",
       "Réponse B<br>Un fort vent de face qui se lève pendant que vous décollez.",
@@ -1778,6 +1778,96 @@
       "Réponse D<br>Le décrochage de la pale reculante se produira à une vitesse indiquée identique au vol stabilisé en palier."
     ],
     "answer":2
+  },
+  {
+    "question":"Deux hélicoptères identiques évoluent en montagne:<br>-Hélicoptère A en stationnaire OGE: masse totale 1950 kg, OAT 26°C, humidite relative 100%, altitude densité 4000 ft<br>-Hélicoptère B en stationnaire OGE: masse totale 1750 kg, OAT 20°C, humidite relative 40%, altitude densité 2500ft.<br> Quelle est la proposition exacte?",
+    "options":[
+      "Réponse A<br>La masse totale élevée de l'hélicoptère A, combinée avec son altitude densite élevée, nécessite un angle de collectif plus faible en stationnaire OGE, par rapport à l'hélicoptère B.",
+      "Réponse B<br>Les différences de conditions entre les deux hélicoptères sont minimes et ne seront pas perçues en vol.",
+      "Réponse C<br>La puissance nécessaire pour le stationnaire OGE sera supérieure pour l'hélicoptère A.",
+      "Réponse D<br>Si une montée verticale depuis le stationnaire OGE est difficilement possible avec l'hélicoptère B, elle est certainement possible avec l'hélicoptère A."
+    ],
+    "answer":2
+  },
+  {
+    "question":"En arrivant au 'flare', en fin d'approche, lors de l'utilisation du palonnier pour maintenir le cap, les pales du rotor de queue doivent pouvoir...",
+    "options":[
+      "Réponse A<br>accelérer.",
+      "Réponse B<br>battre.",
+      "Réponse C<br>changer de pas.",
+      "Réponse D<br>traîner."
+    ],
+    "answer":2
+  },
+  {
+    "question":"L'une des conséquences d'une augmentation rapide du pas collectif provoquant un surcouple sur un hélicoptère mono-turbine est...",
+    "options":[
+      "Réponse A<br>que des butées de collectif empêcheront toute correction appliquée.",
+      "Réponse B<br>une course disponible insuffisante aux palonniers pour corriger la situation.",
+      "Réponse C<br>un dommage du moteur.",
+      "Réponse D<br>une perte de poussée rotor et une chute de tours rotor."
+    ],
+    "answer":3
+  },
+  {
+    "question":"Lors d’un renversement dynamique…",
+    "options":[
+      "Réponse A<br>un angle critique est atteint lorsque l’action au cyclique est inefficace pour contrer le mouvement de roulis.",
+      "Réponse B<br>l’hélicoptère bascule d’un côté alors que les rotors sont arrêtés.",
+      "Réponse C<br>un moment de roulis est déclenché par le déplacement longitudinal du centre de gravité.",
+      "Réponse D<br>la dérive causée par le rotor de queue n’est pas importante, car elle est automatiquement compensée par le mouvement de roulis du rotor de queue."
+    ],
+    "answer":0
+  },
+  {
+    "question":"En cas de résonance au sol...",
+    "options":[
+      "Réponse A<br>le centre de gravité du rotor principal fait une spirale vers l’extérieur, loin du moyeu rotor, ce qui provoque de graves secousses.",
+      "Réponse B<br>le battement des pales du rotor entraîne le déplacement vers l’extérieur du centre de gravité de chaque pale.",
+      "Réponse C<br>le battement des pales du rotor crée une vibration verticale dangereuse qui est transmise au sol par le train d’atterrissage.",
+      "Réponse D<br>Les amortisseurs mécaniques de traînée limitent le mouvement dans le plan des pales du rotor et peuvent finalement stopper le mouvement des secouses."
+    ],
+    "answer":0
+  },
+  {
+    "question":"Après le décollage, sur un hélicoptère dont le rotor principal tourne dans le sens anti-horaire, on constate qu’il ne peut pas manœuvrer l’anti-couple.<br>Lors de la réduction de puissance, l’hélicoptère...",
+    "options":[
+      "Réponse A<br>ne tourne pas du tout.",
+      "Réponse B<br>tourne à gauche.",
+      "Réponse C<br>tourne à droite.",
+      "Réponse D<br>tourne tantôt à gauche, tantôt à droite."
+    ],
+    "answer":2
+  },
+  {
+    "question":"L’angle de conicité se trouve entre...",
+    "options":[
+      "Réponse A<br>le plan d’entraînement et la pale du rotor.",
+      "Réponse B<br>tourne à gauche.",
+      "Réponse C<br>tourne à droite.",
+      "Réponse D<br>tourne tantôt à gauche, tantôt à droite."
+    ],
+    "answer":2
+  },
+  {
+    "question":"Vous ressentez une forte rafale de vent latérale horizontale en stationnaire. Sans correction, l'hélicoptère:",
+    "options":[
+      "Réponse A<br>Se déplace du côté sous le vent.",
+      "Réponse B<br>Descend.",
+      "Réponse C<br>Se déplace du côté au vent.",
+      "Réponse D<br>Monte."
+    ],
+    "answer":0
+  },
+  {
+    "question":"Un synchroptère est...",
+    "options":[
+      "Réponse A<br>un hélicoptère avec deux rotors, l'un au-dessus de l'autre, partageant un arbre commun.",
+      "Réponse B<br>un hélicoptère composé.",
+      "Réponse C<br>un hélicoptère à rotor basculant.",
+      "Réponse D<br>un hélicoptère avec rotor entrelacés qui ne se heurtent jamais."
+    ],
+    "answer":0
   }
   
 ]
